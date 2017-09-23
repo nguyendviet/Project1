@@ -4,17 +4,36 @@
 		<meta charset="utf-8"/>
 		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="style.css"/>
 		<title>Project 1</title>
 	</head>
 	
 	<body>
-		<form class="form-inline">
-			<label class="sr-only" for="name">Name</label>
-			<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="name" placeholder="Type your name here">
-			<button type="submit" class="btn btn-primary">Enter</button>
-		</form>
-		
+
+		<div class="row justify-content-md-center text-center">
+			<div class="col-md-6">
+				<form class="form-inline userLogin">
+					<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 name" placeholder="Type your name here">
+					<button type="submit" class="btn btn-primary btnEnter">Enter</button>
+				</form>
+
+				<div class="choice">
+					<div class="row justify-content-md-center text-center">
+						<button type="button" class="btn btn-primary mr-sm-2 btnCreate">Create Game</button>
+						<form class="form-inline">
+							<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 gameId" placeholder="Exsiting game ID">
+							<button type="submit" class="btn btn-primary btnJoin">Join</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6 game">
+			<div class="gameID"></div>
+		</div>
+
 		<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
