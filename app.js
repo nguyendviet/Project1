@@ -10,10 +10,11 @@ var config = {
 firebase.initializeApp(config);
 
 var database = firebase.database();
-var ref = database.ref();
 
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', gameID: ''};
+var players = {player1: '', player2: '', player3: '', player4: '', player5: '', player6: '', player7: '', player8: '', player9: '', player10: ''};
+var playerCount = 0;
+var myInfo = {name: '', gameID: '', food: ''};
 var foodChosen = food[Math.floor(Math.random() * food.length)];
 
 console.log('food chosen: ', foodChosen);
@@ -28,19 +29,29 @@ function enterName() {
 
 		console.log('myInfo: ', myInfo);
 
-		$('.userLogin').html('Hi ' + name + '!');
-		$('.choice').css('display', 'block');
+		switch (playerCount) {
+			case 0:
+				database.ref(myInfo.gameID + '/players').update({player1: myInfo.name});
+			break;
+
+			case 1:
+				database.ref(myInfo.gameID + '/players').update({player2: myInfo.name});
+			break;
+		}
+		
+		playerCount++;
 	}
 	else {
 		return;
 	}
 }
 
-ref.on('child_added', function(snap) {
+database.ref().on('child_added', function(snap) {
 	myInfo.gameID = snap.key;
+	
+	$('.notification').html('Your game ID: ' + snap.key);
 
-	console.log('game ID: ', snap.key);
-	console.log('myInfo: ', myInfo);
+	console.log(snap.key);
 });
 
 $('.btnEnter').on('click', function(event) {
@@ -52,31 +63,31 @@ $('.btnEnter').on('click', function(event) {
 $('.btnCreate').on('click', function(event) {
 	event.preventDefault();
 
-	database.ref().push({Player1: myInfo.name});
+	database.ref().push({players});
 
-	console.log('push to firebase: ', myInfo.name);
+	/*console.log('current no of players: ', playerCount);*/
 
-	$('.choice').hide();
-	$('.game').css('display', 'block');
-	$('.gameID').html('Your game ID: ' + myInfo.gameID)
+	/*console.log('push to firebase: ', myInfo.name);*/
+
+	/*$('.choice').hide();
+	$('.game').css('display', 'block');*/
+	/*$('.gameID').html('Your game ID: ' + myInfo.gameID)*/
 });
 
-$('.btnJoin').on('click', function(event) {
+/*$('.btnJoin').on('click', function(event) {
 	event.preventDefault();
 
-	var name = $('.gameID').val().trim();
+	var id = $('.gameID').val().trim();
 
-	if (name) {
-		console.log('existing game ID: ', name);
+	if (id) {
+		console.log('existing game ID: ', id);
+
+		database.ref(id + '/players').update({player2: myInfo.name});
 	}
 	else {
 		return;
 	}
-});
-
-//if create game, copy key
-
-//push chosen food to firebase
+});*/
 
 //build hangman game
 

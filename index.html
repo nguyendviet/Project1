@@ -11,27 +11,37 @@
 	
 	<body>
 
-		<div class="row justify-content-md-center text-center">
-			<div class="col-md-6">
+<button type="button" class="btn btn-primary mr-sm-2 btnCreate">Create Game</button>
+<form class="form-inline">
+<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 gameID" placeholder="Exsiting game ID">
+<button type="submit" class="btn btn-primary btnJoin">Join</button>
+</form>
+<div class="notification"></div>
+
+		
 				<form class="form-inline userLogin">
 					<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 name" placeholder="Type your name here">
 					<button type="submit" class="btn btn-primary btnEnter">Enter</button>
 				</form>
+						
 
-				<div class="choice">
-					<div class="row justify-content-md-center text-center">
-						<button type="button" class="btn btn-primary mr-sm-2 btnCreate">Create Game</button>
-						<form class="form-inline">
-							<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 gameId" placeholder="Exsiting game ID">
-							<button type="submit" class="btn btn-primary btnJoin">Join</button>
-						</form>
-					</div>
-				</div>
-			</div>
+		<div class="game">
+			<div class="gameID"></div>
+			<button type="button" class="btn btn-primary mr-sm-2 btnStart">Start Game</button>
+		</div>
+		
+		<div class="game">
+			<div class="food"></div>
 		</div>
 
-		<div class="col-md-6 game">
-			<div class="gameID"></div>
+		<div class="message">
+			<div class="allMessage">
+				<div class="messageHolder"></div>
+				<div class="form-inline">
+					<input type="text" class="form-control col-sm-10 mr-sm-5 newMessage" placeholder="New message here">
+					<button type="submit" class="btn btn-primary btnSend">Send</button>
+				</div>
+			</div>
 		</div>
 
 		<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
