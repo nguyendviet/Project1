@@ -33,13 +33,37 @@ function enterName() {
 			case 0:
 				database.ref(myInfo.gameID + '/players').update({player1: myInfo.name});
 			break;
-
 			case 1:
 				database.ref(myInfo.gameID + '/players').update({player2: myInfo.name});
+			break;
+			case 2:
+				database.ref(myInfo.gameID + '/players').update({player3: myInfo.name});
+			break;
+			case 3:
+				database.ref(myInfo.gameID + '/players').update({player4: myInfo.name});
+			break;
+			case 4:
+				database.ref(myInfo.gameID + '/players').update({player5: myInfo.name});
+			break;
+			case 5:
+				database.ref(myInfo.gameID + '/players').update({player6: myInfo.name});
+			break;
+			case 6:
+				database.ref(myInfo.gameID + '/players').update({player7: myInfo.name});
+			break;
+			case 7:
+				database.ref(myInfo.gameID + '/players').update({player8: myInfo.name});
+			break;
+			case 8:
+				database.ref(myInfo.gameID + '/players').update({player9: myInfo.name});
+			break;
+			case 9:
+				database.ref(myInfo.gameID + '/players').update({player10: myInfo.name});
 			break;
 		}
 		
 		playerCount++;
+		console.log('count: ', playerCount);
 	}
 	else {
 		return;
