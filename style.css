@@ -1,7 +1,11 @@
-.create, .join, .start, .message, .btnWin {
+.create, .join, .start, .chat, .btnWin {
 	display: none;
 }
 
 .messageBoard {
 	height: 200px;
+}
+
+.test {
+	border: 3px dashed orange;
 }
