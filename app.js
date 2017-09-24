@@ -13,7 +13,7 @@ var database = firebase.database();
 
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
 
-var myInfo = {name: ''};
+var myInfo = {name: '', creator: false};
 
 var playersInGame;
 
@@ -33,7 +33,15 @@ $('.btnEnter').on('click', function(event) {
 		$('.hi').html('Hi ' + name);
 
 		if (playersInGame >= 1) {
-			$('.join').css('display', 'block');
+
+			//only show join button when there is a game and the game hasn't started yet to prevent new comers interrupt the game
+			if (database.ref('start') === null) {
+				$('.join').css('display', 'block');
+			}
+			else {
+				return;
+			}
+			
 		}
 		else {
 			$('.create').css('display', 'block');
@@ -53,7 +61,9 @@ $('.btnCreate').on('click', function() {
 
 	$('.join').hide();
 
-	$('.start').css('display', 'block');
+	myInfo.creator = true;
+
+	/*$('.start').css('display', 'block');*/
 });
 
 $('.btnJoin').on('click', function(event) {
@@ -76,13 +86,24 @@ database.ref('players').on('value', function(snap) {
 		$('.notify').html('Current number of players: ' + playersInGame);
 
 		$('.create').hide();
-		$('.join').css('display', 'block'); //attempting to fix condition: a in, b in, a create first, b join, a shown join
+
+		if (myInfo.creator !== true) {
+			$('.join').css('display', 'block'); //only show join button to playrers not the creator
+		}
+
+		if (playersInGame >= 2) {
+			$('.start').css('display', 'block'); //show start button when there are 2 or more players
+		}
 	}
 	else {
 		database.ref('chat').remove();
 		database.ref('winner').remove();
+		database.ref('creator').remove(); //remove creator ref if 0 player
+		database.ref('start').remove();
+
 		$('.alert').html('');
 		$('.messageBoard').html('');
+		$('.create').hide();
 	}
 
 	console.log(playersInGame);
@@ -127,4 +148,10 @@ $('.btnStart').on('click', function(){
 
 database.ref('start').on('child_added', function(snap) {
 	$('.notify').html(snap.val() + 'has started the game!');
+});
+
+database.ref('start').on('value', function() {
+	$('.create').hide();
+	$('.join').hide();
+	$('.start').hide();
 });
