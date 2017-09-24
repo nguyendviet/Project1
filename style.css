@@ -1,3 +1,7 @@
+.create, .join, .start, .message, .btnWin {
+	display: none;
+}
+
 .messageBoard {
 	height: 200px;
 }

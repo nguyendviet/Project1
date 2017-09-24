@@ -15,6 +15,8 @@ var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
 
 var myInfo = {name: ''};
 
+var playersInGame;
+
 //log in
 
 //type in name. hit enter
@@ -27,49 +29,67 @@ $('.btnEnter').on('click', function(event) {
 	if (name) {
 		myInfo.name = name;
 
-		console.log('my name is', name);
+		$('.login').hide();
+		$('.hi').html('Hi ' + name);
+
+		if (playersInGame >= 1) {
+			$('.join').css('display', 'block');
+		}
+		else {
+			$('.create').css('display', 'block');
+		}
 	}
 	else {
 		return;
 	}
 });
 
-//create or join game
-
 //create game:
 //push name to firebase
 $('.btnCreate').on('click', function() {
-	var myRef = database.ref('players').push(myInfo.name);
+	var myRef = database.ref('players').push(myInfo);
 
 	myRef.onDisconnect().remove();
+
+	$('.join').hide();
+
+	$('.start').css('display', 'block');
 });
+
+$('.btnJoin').on('click', function(event) {
+	event.preventDefault();
+
+	var myRef = database.ref('players').push(myInfo); //same as create for testing
+
+	myRef.onDisconnect().remove();
+
+	$('.join').hide();
+});
+
 
 //when 2 or more players join, open chat, open start button
 
 database.ref('players').on('value', function(snap) {
-	var playersInGame = snap.numChildren();
+	playersInGame = snap.numChildren();
 
 	if (playersInGame !== 0 ) {
-		$('.alert').html('Current number of players: ' + playersInGame);
+		$('.notify').html('Current number of players: ' + playersInGame);
+
+		$('.create').hide();
+		$('.join').css('display', 'block'); //attempting to fix condition: a in, b in, a create first, b join, a shown join
 	}
 	else {
 		database.ref('chat').remove();
+		database.ref('winner').remove();
+		$('.alert').html('');
 		$('.messageBoard').html('');
 	}
 
 	console.log(playersInGame);
 });
 
-//game start: play
+//play game
 
-//join game:
-//push name to firebase
-
-//guess word
-
-//show result
-
-//send message
 $('.btnSend').on('click', function(event) {
 	event.preventDefault();
 
@@ -85,4 +105,26 @@ $('.btnSend').on('click', function(event) {
 
 database.ref('chat').on('child_added', function(snap) {
 	$('.messageBoard').append(snap.val());
+});
+
+$('.btnWin').on('click', function() {
+	database.ref('winner').set(myInfo);
+});
+
+database.ref('winner').on('child_added', function(snap) {
+	$('.notify').html('The winner is ' + snap.val());
+
+	setTimeout(clear, 1000 * 3);
+});
+
+function clear() {
+	database.ref('players').remove();
+}
+
+$('.btnStart').on('click', function(){
+	database.ref('start').set(myInfo);
+});
+
+database.ref('start').on('child_added', function(snap) {
+	$('.notify').html(snap.val() + 'has started the game!');
 });
