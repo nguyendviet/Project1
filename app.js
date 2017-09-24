@@ -12,109 +12,77 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var players = {player1: '', player2: '', player3: '', player4: '', player5: '', player6: '', player7: '', player8: '', player9: '', player10: ''};
-var playerCount = 0;
-var myInfo = {name: '', gameID: '', food: ''};
-var foodChosen = food[Math.floor(Math.random() * food.length)];
 
-console.log('food chosen: ', foodChosen);
+var myInfo = {name: ''};
 
-function enterName() {
-	var name = $('.name').val().trim();
+//log in
 
-	if (name) {
-		console.log('name: ', name);
-
-		myInfo.name = name;
-
-		console.log('myInfo: ', myInfo);
-
-		switch (playerCount) {
-			case 0:
-				database.ref(myInfo.gameID + '/players').update({player1: myInfo.name});
-			break;
-			case 1:
-				database.ref(myInfo.gameID + '/players').update({player2: myInfo.name});
-			break;
-			case 2:
-				database.ref(myInfo.gameID + '/players').update({player3: myInfo.name});
-			break;
-			case 3:
-				database.ref(myInfo.gameID + '/players').update({player4: myInfo.name});
-			break;
-			case 4:
-				database.ref(myInfo.gameID + '/players').update({player5: myInfo.name});
-			break;
-			case 5:
-				database.ref(myInfo.gameID + '/players').update({player6: myInfo.name});
-			break;
-			case 6:
-				database.ref(myInfo.gameID + '/players').update({player7: myInfo.name});
-			break;
-			case 7:
-				database.ref(myInfo.gameID + '/players').update({player8: myInfo.name});
-			break;
-			case 8:
-				database.ref(myInfo.gameID + '/players').update({player9: myInfo.name});
-			break;
-			case 9:
-				database.ref(myInfo.gameID + '/players').update({player10: myInfo.name});
-			break;
-		}
-		
-		playerCount++;
-		console.log('count: ', playerCount);
-	}
-	else {
-		return;
-	}
-}
-
-database.ref().on('child_added', function(snap) {
-	myInfo.gameID = snap.key;
-	
-	$('.notification').html('Your game ID: ' + snap.key);
-
-	console.log(snap.key);
-});
-
+//type in name. hit enter
+//name stored local
 $('.btnEnter').on('click', function(event) {
 	event.preventDefault();
 
-	enterName();
-});
+	var name = $('.name').val().trim();
 
-$('.btnCreate').on('click', function(event) {
-	event.preventDefault();
+	if (name) {
+		myInfo.name = name;
 
-	database.ref().push({players});
-
-	/*console.log('current no of players: ', playerCount);*/
-
-	/*console.log('push to firebase: ', myInfo.name);*/
-
-	/*$('.choice').hide();
-	$('.game').css('display', 'block');*/
-	/*$('.gameID').html('Your game ID: ' + myInfo.gameID)*/
-});
-
-/*$('.btnJoin').on('click', function(event) {
-	event.preventDefault();
-
-	var id = $('.gameID').val().trim();
-
-	if (id) {
-		console.log('existing game ID: ', id);
-
-		database.ref(id + '/players').update({player2: myInfo.name});
+		console.log('my name is', name);
 	}
 	else {
 		return;
 	}
-});*/
+});
 
-//build hangman game
+//create or join game
 
-//push winner name
+//create game:
+//push name to firebase
+$('.btnCreate').on('click', function() {
+	var myRef = database.ref('players').push(myInfo.name);
 
-//firebase show all users winner name + chosen food
+	myRef.onDisconnect().remove();
+});
+
+//when 2 or more players join, open chat, open start button
+
+database.ref('players').on('value', function(snap) {
+	var playersInGame = snap.numChildren();
+
+	if (playersInGame !== 0 ) {
+		$('.alert').html('Current number of players: ' + playersInGame);
+	}
+	else {
+		database.ref('chat').remove();
+		$('.messageBoard').html('');
+	}
+
+	console.log(playersInGame);
+});
+
+//game start: play
+
+//join game:
+//push name to firebase
+
+//guess word
+
+//show result
+
+//send message
+$('.btnSend').on('click', function(event) {
+	event.preventDefault();
+
+	var message = $('.newMessage').val().trim();
+
+	if (message) {
+		database.ref('chat').push('<p>' + myInfo.name + ': ' + message + '</p>');
+	}
+	else {
+		return;
+	}
+});
+
+database.ref('chat').on('child_added', function(snap) {
+	$('.messageBoard').append(snap.val());
+});
