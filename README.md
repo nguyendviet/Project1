@@ -2,9 +2,12 @@
 George Washington University Group Project  
 
 =================================================================
+
 From Viet:
 Added: app.js, style.css
 Edited: index.html
+
+=====>IMPORTANT: use your own firebase for testing.
 
 Logic works:
 
@@ -30,4 +33,5 @@ Game can start again normally when start button pressed.
 
 - No errors found.
 - All possibilities checked.
+
 =================================================================
