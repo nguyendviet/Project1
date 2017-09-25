@@ -15,8 +15,10 @@ GLOBAL VARS
 
 var database = firebase.database();
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', creator: false};
+var myInfo = {name: '', join: false};
 var playersInGame;
+
+console.log(myInfo);
 
 /*=========================================================================================================
 FUNCTIONS
@@ -35,20 +37,12 @@ database.ref('players').on('value', function(snap) {
 	playersInGame = snap.numChildren();
 
 	if (playersInGame !== 0 ) {
-		$('.notify').html('Current number of players: ' + playersInGame + '. Waiting for players...');
+		$('.notify').html('Current number of players: ' + playersInGame);
 
 		$('.create').hide(); //hide create button from others when the game is created
 
-		if (myInfo.creator !== true) {
-			$('.join').css('display', 'block'); //only show join button to playrers not the creator
-		}
-
-		if (playersInGame >= 2) {
-			
-			if (myInfo.name !== '') {
-				$('.start').css('display', 'block'); //show start button when there are 2 or more players
-				$('.chat').css('display', 'block'); //only chow chat to player enter with a name
-			}
+		if (myInfo.join !== true) {
+			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
 		if ((playersInGame === 1) && (database.ref('start'))) {
@@ -58,16 +52,27 @@ database.ref('players').on('value', function(snap) {
 	else {
 		database.ref('chat').remove();
 		database.ref('winner').remove();
-		database.ref('creator').remove(); //remove creator ref if 0 player
 		database.ref('start').remove();
 
-		$('.alert').html('');
-		$('.messageBoard').html('');
+		// $('.notify').html('');
+		// $('.messageBoard').html('');
 		$('.create').hide();
 		$('.join').hide();
 	}
 
 	console.log(playersInGame);
+});
+
+//build: prevent 4th player joins if game started and 1 out of 3 quits
+database.ref('players').on('child_removed', function(snap) {
+	database.ref('start').remove();
+
+	if ((playersInGame >= 2) && (myInfo.join === true)) {
+		$('.start').show(); //only show start button to player already joined
+	}
+	else {
+		return;
+	}
 });
 
 //when start ref has value
@@ -118,7 +123,6 @@ $('.btnEnter').on('click', function(event) {
 			else {
 				return;
 			}
-			
 		}
 		else {
 			$('.create').css('display', 'block'); //show create button if no-one in the game
@@ -127,6 +131,8 @@ $('.btnEnter').on('click', function(event) {
 	else {
 		return;
 	}
+
+	console.log(myInfo);
 });
 
 //create game, push name to firebase
@@ -135,11 +141,16 @@ $('.btnCreate').on('click', function() {
 
 	myRef.onDisconnect().remove();
 
-	$('.join').hide(); //hide join button of creator
+	$('.join').hide(); //hide join button of host
 
-	myInfo.creator = true;
+	myInfo.join = true;
 
-	/*$('.start').css('display', 'block');*/
+	console.log(myInfo);
+
+	if (playersInGame >= 1) {
+		$('.start').css('display', 'block'); //show start button for player created the game
+		$('.chat').css('display', 'block');
+	}
 });
 
 //join game
@@ -152,16 +163,32 @@ $('.btnJoin').on('click', function(event) {
 	}
 	else {
 		var myRef = database.ref('players').push(myInfo); //same as create for testing
+		myInfo.join = true;
 	}
 	
 	myRef.onDisconnect().remove();
 
 	$('.join').hide();
+
+	if (playersInGame >= 2) {
+		$('.start').css('display', 'block'); //show start button only to players joined but not the creator
+		$('.chat').css('display', 'block');
+	}
+
+	console.log(myInfo);
 });
 
 //start game
 $('.btnStart').on('click', function(){
-	database.ref('start').set(myInfo);
+
+	if (playersInGame >=2 ) {
+		database.ref('start').set(myInfo);
+
+		console.log(myInfo);
+	}
+	else {
+		return;
+	}
 });
 
 //create chat when a user sends a message
@@ -176,10 +203,12 @@ $('.btnSend').on('click', function(event) {
 	else {
 		return;
 	}
+
+	//clear sent message from box
+	$('.newMessage').val(''); 
 });
 
 //win game - just for testing (will remove this one when there is real game)
 $('.btnWin').on('click', function() {
 	database.ref('winner').set(myInfo);
 });
-
