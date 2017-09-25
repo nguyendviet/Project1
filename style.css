@@ -1,20 +1,12 @@
-.create, .join, .start, .chat, .btnWin {
+.create, .gameId, .join, .start, .chat, .btnWin {
 	display: none;
 }
 
 .messageBoard {
 	height: 200px;
+	overflow-y: scroll;
 }
 
 .test {
 	border: 3px dashed orange;
-}
-
-.letter {
-    width: 30px;
-    height: 30px;
-    border-style: solid;
-    padding: 2px;
-    float: left;
-    margin: 2px;
 }
