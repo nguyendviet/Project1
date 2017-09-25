@@ -15,7 +15,7 @@ GLOBAL VARS
 
 var database = firebase.database();
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', creator: false};
+var myInfo = {name: '', host: false, join: false};
 var playersInGame;
 
 /*=========================================================================================================
@@ -39,14 +39,16 @@ database.ref('players').on('value', function(snap) {
 
 		$('.create').hide(); //hide create button from others when the game is created
 
-		if (myInfo.creator !== true) {
-			$('.join').css('display', 'block'); //only show join button to playrers not the creator
+		if (myInfo.host !== true) {
+			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
 		if (playersInGame >= 2) {
 			
 			if (myInfo.name !== '') {
-				$('.start').css('display', 'block'); //show start button when there are 2 or more players
+				//$('.start').css('display', 'block'); //show start button when there are 2 or more players
+				$('.start').css('display', 'block'); //error: without myInfo.join, if a new user has a name, even not in the game, start button still shown. with myInfo.join, only the host can see start button.
+
 				$('.chat').css('display', 'block'); //only chow chat to player enter with a name
 			}
 		}
@@ -58,7 +60,7 @@ database.ref('players').on('value', function(snap) {
 	else {
 		database.ref('chat').remove();
 		database.ref('winner').remove();
-		database.ref('creator').remove(); //remove creator ref if 0 player
+		database.ref('host').remove(); //remove host ref if 0 player. why do i need this?
 		database.ref('start').remove();
 
 		$('.alert').html('');
@@ -135,11 +137,10 @@ $('.btnCreate').on('click', function() {
 
 	myRef.onDisconnect().remove();
 
-	$('.join').hide(); //hide join button of creator
+	$('.join').hide(); //hide join button of host
 
-	myInfo.creator = true;
-
-	/*$('.start').css('display', 'block');*/
+	myInfo.host = true;
+	myInfo.join = true;
 });
 
 //join game
@@ -152,6 +153,7 @@ $('.btnJoin').on('click', function(event) {
 	}
 	else {
 		var myRef = database.ref('players').push(myInfo); //same as create for testing
+		myInfo.join = true;
 	}
 	
 	myRef.onDisconnect().remove();
