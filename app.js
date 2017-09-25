@@ -63,13 +63,25 @@ database.ref('players').on('value', function(snap) {
 		database.ref('host').remove(); //remove host ref if 0 player. why do i need this?
 		database.ref('start').remove();
 
-		$('.alert').html('');
+		$('.notify').html(''); //what does this do?
 		$('.messageBoard').html('');
 		$('.create').hide();
 		$('.join').hide();
 	}
 
 	console.log(playersInGame);
+});
+
+//build: prevent 4th player joins if game started and 1 out of 3 quits
+database.ref('players').on('child_removed', function(snap) {
+	database.ref('start').remove();
+
+	if ((playersInGame >= 2) && (myInfo.join === true)) {
+		$('.start').show(); //only show start button to player already joined
+	}
+	else {
+		return;
+	}
 });
 
 //when start ref has value
