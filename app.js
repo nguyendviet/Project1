@@ -45,14 +45,6 @@ database.ref('players').on('value', function(snap) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
-			/*if ((playersInGame >= 2) && (myInfo.join === true)) {
-				
-					//$('.start').css('display', 'block'); //show start button when there are 2 or more players
-					$('.start').css('display', 'block'); //error: without myInfo.join, if a new user has a name, even not in the game, start button still shown. with myInfo.join, only the host can see start button.
-
-					$('.chat').css('display', 'block'); //only chow chat to player enter with a name
-			}*/
-
 		if ((playersInGame === 1) && (database.ref('start'))) {
 			database.ref('start').remove(); //remove in game condition if players left and only 1 player left
 		}
@@ -60,11 +52,10 @@ database.ref('players').on('value', function(snap) {
 	else {
 		database.ref('chat').remove();
 		database.ref('winner').remove();
-		database.ref('host').remove(); //remove host ref if 0 player. why do i need this?
 		database.ref('start').remove();
 
-		$('.notify').html(''); //what does this do?
-		$('.messageBoard').html('');
+		// $('.notify').html('');
+		// $('.messageBoard').html('');
 		$('.create').hide();
 		$('.join').hide();
 	}
@@ -132,7 +123,6 @@ $('.btnEnter').on('click', function(event) {
 			else {
 				return;
 			}
-			
 		}
 		else {
 			$('.create').css('display', 'block'); //show create button if no-one in the game
@@ -156,7 +146,6 @@ $('.btnCreate').on('click', function() {
 	myInfo.join = true;
 
 	console.log(myInfo);
-
 
 	if (playersInGame >= 1) {
 		$('.start').css('display', 'block'); //show start button for player created the game
@@ -191,9 +180,15 @@ $('.btnJoin').on('click', function(event) {
 
 //start game
 $('.btnStart').on('click', function(){
-	database.ref('start').set(myInfo);
 
-	console.log(myInfo);
+	if (playersInGame >=2 ) {
+		database.ref('start').set(myInfo);
+
+		console.log(myInfo);
+	}
+	else {
+		return;
+	}
 });
 
 //create chat when a user sends a message
@@ -208,18 +203,13 @@ $('.btnSend').on('click', function(event) {
 	else {
 		return;
 	}
+
+	//clear sent message from box
+	$('.newMessage').val(''); 
 });
 
 //win game - just for testing (will remove this one when there is real game)
 $('.btnWin').on('click', function() {
 	database.ref('winner').set(myInfo);
 });
-
-//holes in logic:
-
-//if C has name but not in game, still see start game button and chat
-
-//B quits, C joins, only C can start, A cannot start
-
-//one more player joins, C now has join button, if clicked, add another C -> game messed up
 
