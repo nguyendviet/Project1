@@ -15,8 +15,10 @@ GLOBAL VARS
 
 var database = firebase.database();
 var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', host: false, join: false};
+var myInfo = {name: '', join: false};
 var playersInGame;
+
+console.log(myInfo);
 
 /*=========================================================================================================
 FUNCTIONS
@@ -35,23 +37,21 @@ database.ref('players').on('value', function(snap) {
 	playersInGame = snap.numChildren();
 
 	if (playersInGame !== 0 ) {
-		$('.notify').html('Current number of players: ' + playersInGame + '. Waiting for players...');
+		$('.notify').html('Current number of players: ' + playersInGame);
 
 		$('.create').hide(); //hide create button from others when the game is created
 
-		if (myInfo.host !== true) {
+		if (myInfo.join !== true) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
-		if (playersInGame >= 2) {
-			
-			if (myInfo.name !== '') {
-				//$('.start').css('display', 'block'); //show start button when there are 2 or more players
-				$('.start').css('display', 'block'); //error: without myInfo.join, if a new user has a name, even not in the game, start button still shown. with myInfo.join, only the host can see start button.
+			/*if ((playersInGame >= 2) && (myInfo.join === true)) {
+				
+					//$('.start').css('display', 'block'); //show start button when there are 2 or more players
+					$('.start').css('display', 'block'); //error: without myInfo.join, if a new user has a name, even not in the game, start button still shown. with myInfo.join, only the host can see start button.
 
-				$('.chat').css('display', 'block'); //only chow chat to player enter with a name
-			}
-		}
+					$('.chat').css('display', 'block'); //only chow chat to player enter with a name
+			}*/
 
 		if ((playersInGame === 1) && (database.ref('start'))) {
 			database.ref('start').remove(); //remove in game condition if players left and only 1 player left
@@ -129,6 +129,8 @@ $('.btnEnter').on('click', function(event) {
 	else {
 		return;
 	}
+
+	console.log(myInfo);
 });
 
 //create game, push name to firebase
@@ -139,8 +141,15 @@ $('.btnCreate').on('click', function() {
 
 	$('.join').hide(); //hide join button of host
 
-	myInfo.host = true;
 	myInfo.join = true;
+
+	console.log(myInfo);
+
+
+	if (playersInGame >= 1) {
+		$('.start').css('display', 'block'); //show start button for player created the game
+		$('.chat').css('display', 'block');
+	}
 });
 
 //join game
@@ -159,11 +168,20 @@ $('.btnJoin').on('click', function(event) {
 	myRef.onDisconnect().remove();
 
 	$('.join').hide();
+
+	if (playersInGame >= 2) {
+		$('.start').css('display', 'block'); //show start button only to players joined but not the creator
+		$('.chat').css('display', 'block');
+	}
+
+	console.log(myInfo);
 });
 
 //start game
 $('.btnStart').on('click', function(){
 	database.ref('start').set(myInfo);
+
+	console.log(myInfo);
 });
 
 //create chat when a user sends a message
@@ -184,4 +202,12 @@ $('.btnSend').on('click', function(event) {
 $('.btnWin').on('click', function() {
 	database.ref('winner').set(myInfo);
 });
+
+//holes in logic:
+
+//if C has name but not in game, still see start game button and chat
+
+//B quits, C joins, only C can start, A cannot start
+
+//one more player joins, C now has join button, if clicked, add another C -> game messed up
 
