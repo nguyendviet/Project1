@@ -90,6 +90,7 @@ database.ref('chat').on('child_added', function(snap) {
 database.ref('winner').on('child_added', function(snap) {
 	$('.notify').html('The winner is ' + snap.val());
 
+
 	setTimeout(clear, 1000 * 3);
 });
 
@@ -181,5 +182,33 @@ $('.btnSend').on('click', function(event) {
 //win game - just for testing (will remove this one when there is real game)
 $('.btnWin').on('click', function() {
 	database.ref('winner').set(myInfo);
+});
+
+/*=========================================================================================================
+w3w Words Call Upon Winning UNDERCONSTRUCTION 
+=========================================================================================================*/
+
+var latLong = "38.881487,-77.116197";
+
+	$("#getw3w").on("click", function() {
+
+      // Supplying the Coordinates to the queryURL
+      var queryURL = "https://api.what3words.com/v2/reverse?coords=" + latLong + "&display=full&format=json&key=9I7B51YQ"
+
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+
+      .done(function(response){
+      	console.log(queryURL);
+        console.log(response);
+        console.log(response.words);
+
+      //Place words response into div on screen
+      // $("#words").text(response.words);
+      $('.words').html('The 3 Word Address is: ' + response.words);
+    })
 });
 
