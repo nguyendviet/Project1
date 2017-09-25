@@ -3,6 +3,8 @@ George Washington University Group Project
 
 =================================================================
 
+Use this link to run the app: https://nguyendviet.github.io/Project1/
+
 From Viet:
 Added: app.js, style.css
 Edited: index.html
