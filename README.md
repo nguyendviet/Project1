@@ -7,8 +7,6 @@ Contributors: James, Mike, Rolando, Viet
 
 Use this link to run the app: https://nguyendviet.github.io/Project1/
 
-From Viet: Added: app.js, style.css Edited: index.html
-
 =====>IMPORTANT: use your own firebase for testing.
 
 Logic works:
