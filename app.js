@@ -182,7 +182,7 @@ $('.btnJoin').on('click', function(event) {
 	$('.join').hide();
 
 	if (playersInGame >= 2) {
-		//show start button only to players joined but not the creator
+		//show start button only to players joined
 		showGameInfo();
 	}
 
