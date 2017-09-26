@@ -13,10 +13,16 @@ firebase.initializeApp(config);
 GLOBAL VARS
 =========================================================================================================*/
 
+//firebase vars
 var database = firebase.database();
-var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', join: false};
+var playersRef = database.ref('players');
+var startRef = database.ref('start');
+var chatRef = database.ref('chat');
+var winnerRef = database.ref('winner');
+
+//browser vars
 var playersInGame;
+var myInfo = {name: '', join: false};
 
 console.log(myInfo);
 
@@ -24,8 +30,13 @@ console.log(myInfo);
 FUNCTIONS
 =========================================================================================================*/
 
+function showGameInfo() {
+	$('.start').css('display', 'block'); 
+	$('.chat').css('display', 'block');
+}
+
 function clear() {
-	database.ref('players').remove();
+	playersRef.remove(); //might not want to clear players, maybe clear start only
 }
 
 /*=========================================================================================================
@@ -33,7 +44,7 @@ FIREBASE EVENTS
 =========================================================================================================*/
 
 //when player ref has any value
-database.ref('players').on('value', function(snap) {
+playersRef.on('value', function(snap) {
 	playersInGame = snap.numChildren();
 
 	if (playersInGame !== 0 ) {
@@ -46,26 +57,25 @@ database.ref('players').on('value', function(snap) {
 		}
 
 		if ((playersInGame === 1) && (database.ref('start'))) {
-			database.ref('start').remove(); //remove in game condition if players left and only 1 player left
+			startRef.remove(); //remove in game condition if players left and only 1 player left
 		}
 	}
 	else {
-		database.ref('chat').remove();
-		database.ref('winner').remove();
-		database.ref('start').remove();
+		chatRef.remove();
+		startRef.remove();
+		winnerRef.remove();
 
-		// $('.notify').html('');
-		// $('.messageBoard').html('');
 		$('.create').hide();
 		$('.join').hide();
+		$('.notify').html(''); //clear notification for players not in game but don't reload browser
 	}
 
 	console.log(playersInGame);
 });
 
-//build: prevent 4th player joins if game started and 1 out of 3 quits
-database.ref('players').on('child_removed', function(snap) {
-	database.ref('start').remove();
+//prevent 4th player joins if game started and 1 out of 3 quits
+playersRef.on('child_removed', function(snap) {
+	startRef.remove(); //stop game
 
 	if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
@@ -76,7 +86,7 @@ database.ref('players').on('child_removed', function(snap) {
 });
 
 //when start ref has value
-database.ref('start').on('child_added', function(snap) {
+startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
 
 	$('.create').hide();
@@ -87,12 +97,12 @@ database.ref('start').on('child_added', function(snap) {
 //play game: UNDER CONSTRUCTION
 
 //print out messages when there is a message
-database.ref('chat').on('child_added', function(snap) {
+chatRef.on('child_added', function(snap) {
 	$('.messageBoard').append(snap.val());
 });
 
 //when winner ref has value
-database.ref('winner').on('child_added', function(snap) {
+winnerRef.on('child_added', function(snap) {
 	$('.notify').html('The winner is ' + snap.val());
 
 	setTimeout(clear, 1000 * 3);
@@ -115,9 +125,8 @@ $('.btnEnter').on('click', function(event) {
 		$('.hi').html('Hi ' + name);
 
 		if (playersInGame >= 1) {
-
-			//only show join button when there is a game and the game hasn't started yet to prevent new comers interrupt the game
-			if (database.ref('start') === null) {
+			//only show join button when there is a game and the game hasn't started yet to prevent new comers from interrupting the game
+			if (startRef === null) {
 				$('.join').css('display', 'block');
 			}
 			else {
@@ -125,7 +134,8 @@ $('.btnEnter').on('click', function(event) {
 			}
 		}
 		else {
-			$('.create').css('display', 'block'); //show create button if no-one in the game
+			//show create button if no-one already in the game
+			$('.create').css('display', 'block'); 
 		}
 	}
 	else {
@@ -137,20 +147,20 @@ $('.btnEnter').on('click', function(event) {
 
 //create game, push name to firebase
 $('.btnCreate').on('click', function() {
-	var myRef = database.ref('players').push(myInfo);
+	var myRef = playersRef.push(myInfo);
+	myInfo.join = true;
 
 	myRef.onDisconnect().remove();
 
-	$('.join').hide(); //hide join button of host
-
-	myInfo.join = true;
-
-	console.log(myInfo);
+	//hide join button of host
+	$('.join').hide(); 
 
 	if (playersInGame >= 1) {
-		$('.start').css('display', 'block'); //show start button for player created the game
-		$('.chat').css('display', 'block');
+		//show start button for player created the game
+		showGameInfo();
 	}
+
+	console.log(myInfo);
 });
 
 //join game
@@ -162,7 +172,8 @@ $('.btnJoin').on('click', function(event) {
 		return;
 	}
 	else {
-		var myRef = database.ref('players').push(myInfo); //same as create for testing
+		var myRef = playersRef.push(myInfo);
+
 		myInfo.join = true;
 	}
 	
@@ -171,8 +182,8 @@ $('.btnJoin').on('click', function(event) {
 	$('.join').hide();
 
 	if (playersInGame >= 2) {
-		$('.start').css('display', 'block'); //show start button only to players joined but not the creator
-		$('.chat').css('display', 'block');
+		//show start button only to players joined
+		showGameInfo();
 	}
 
 	console.log(myInfo);
@@ -182,7 +193,7 @@ $('.btnJoin').on('click', function(event) {
 $('.btnStart').on('click', function(){
 
 	if (playersInGame >=2 ) {
-		database.ref('start').set(myInfo);
+		startRef.set(myInfo);
 
 		console.log(myInfo);
 	}
@@ -198,7 +209,7 @@ $('.btnSend').on('click', function(event) {
 	var message = $('.newMessage').val().trim();
 
 	if (message) {
-		database.ref('chat').push('<p>' + myInfo.name + ': ' + message + '</p>');
+		chatRef.push('<p>' + myInfo.name + ': ' + message + '</p>');
 	}
 	else {
 		return;
@@ -210,6 +221,5 @@ $('.btnSend').on('click', function(event) {
 
 //win game - just for testing (will remove this one when there is real game)
 $('.btnWin').on('click', function() {
-	database.ref('winner').set(myInfo);
+	winnerRef.set(myInfo);
 });
-
