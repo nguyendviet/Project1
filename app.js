@@ -76,7 +76,7 @@ playersRef.on('value', function(snap) {
 
 //prevent 4th player joins if game started and 1 out of 3 quits???
 playersRef.on('child_removed', function(snap) {
-	winnerRef.remove(); //remov winner's info whenever a user left
+	winnerRef.remove(); //remove winner's info whenever a user left
 
 	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
