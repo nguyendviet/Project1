@@ -227,21 +227,31 @@ $('.btnSend').on('click', function(event) {
 
 
 
-// JAMES'S CODE BEGINS
-
 /*=========================================================================================================
-Write letter choices on screen -- UNDERCONSTRUCTION 
+MAIN GAME BEGINS
 =========================================================================================================*/
+var food = ["Pho", "Curry", "Lasagna", "Ramen", "Banh Mi"];
 
+//keyboard's vars
 var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
 var row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
 var row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 var row4 = [' '];
 
+//main game vars
+var foodChosen = "";
+var foodChosenArray = [];
+var numBlanks = 0;
+var foodHidden = [];
+var foodDisplayed = [];
+var wrongGuesses = [];
+var letterGuessed = "";
+
+//timer vars
+var countDown = 6;
+var intervalId;
 
 // PRINT QWERTY KEYBOARD
-// =================================================================================
-
 //print row 1
 for (var i = 0; i < row1.length; i++) {
 	var lBtn = $("<button>");
@@ -285,102 +295,88 @@ function printRow4() {
 	
 	$(".row4").append(lBtn);
 }
-
 printRow4();
-
-/*=========================================================================================================
-GUESS LETTER (HANGMAN) -- UNDERCONSTRUCTION 
-=========================================================================================================*/
-var food = ["pho", "curry", "lasagna", "ramen"]; //for global vars, don't call them a,b,c; they are more suitable for local vars
-var foodChosen = "";
-var foodChosenArray = [];
-var numBlanks = 0;
-var foodHidden = [];
-var foodDisplayed = [];
-var wrongGuesses = [];
-var letterGuessed = "";
 
 function startGame() {
 
-      foodChosen = food[Math.floor(Math.random() * food.length)];
-      console.log(foodChosen);
-      foodChosenArray = foodChosen.split("");
-      numBlanks = foodChosenArray.length;
-      foodhHidden = [];
-      
-      for (var i = 0; i < numBlanks; i++) {
-      foodHidden.push("_");
-      }
-      console.log(foodHidden.join(" "));
-      foodDisplayed = foodHidden.join(' ');
-      $("#word-blanks").html(foodDisplayed);
+	foodChosen = food[Math.floor(Math.random() * food.length)];
+	console.log(foodChosen);
+	foodChosenArray = foodChosen.split("");
+	numBlanks = foodChosenArray.length;
+	foodhHidden = [];
+
+	for (var i = 0; i < numBlanks; i++) {
+		foodHidden.push("_");
+	}
+	console.log(foodHidden.join(" "));
+
+	foodDisplayed = foodHidden.join(' ');
+	$(".word-blanks").html(foodDisplayed);
 }
 
 function checkLetters(letter) {
 
-  var letterInWord = false;
-  for (var i = 0; i < numBlanks; i++) {
-    if (foodChosen[i] === letter) {
-      letterInWord = true;
-    }
-  }
+	var letterInWord = false;
+	
+	for (var i = 0; i < numBlanks; i++) {
+		if (foodChosen[i].toLowerCase() === letter) {
+		letterInWord = true;
+		}
+	}
 
-  if (letterInWord) {
-    for (var j = 0; j < numBlanks; j++) {
-      if (foodChosen[j] === letter) {
-        foodHidden[j] = letter;
-      }
-    }
-    var join = foodHidden.join(' ');
-    $("#word-blanks").html(join);
+	if (letterInWord) {
+		for (var j = 0; j < numBlanks; j++) {
+			if (foodChosen[j].toLowerCase() === letter) {
+			foodHidden[j] = foodChosen[j];
+			}
+		}
+		foodDisplayed = foodHidden.join(' ');
+		$(".word-blanks").html(foodDisplayed);
 
-  } else{
-    run()
-  }
+	} 
+	else {
+		timer();
+	}
 }
 
-function gameOver(){
-  if (foodChosenArray.toString() === foodHidden.toString()) {
-    // win++; don't need to increase count of win, there's only 1 game
-    console.log('You win!');
-  }
+function gameOver() {
+	if (foodChosenArray.toString() === foodHidden.toString()) {
+		// win++; don't need to increase count of win, there's only 1 game
+		console.log('You win!');
+	}
 }
+
+//TIMER's functions
+function timer() {
+	intervalId = setInterval(decrement, 1000);
+	$('button').prop('disabled', true);
+}
+
+function decrement() {
+	countDown--;
+	$(".pause").html("<h2>" + countDown + "</h2>");
+	if (countDown === 0) {
+		stop();
+		console.log("Resume Play");
+	}
+}
+
+function stop() {
+	clearInterval(intervalId);
+	$(".pause").html("");
+	$('button').prop('disabled', false);
+	countDown = 6;
+}
+
 startGame();
 
 $(document).on("click", ".letter-button", function() {
-		var letterPressed = $(this).attr("data-letter").toLowerCase();
+	var letterPressed = $(this).attr("data-letter").toLowerCase();
 
-            checkLetters(letterPressed);
-            console.log(letterPressed);
-            gameOver();        			
+	checkLetters(letterPressed);
+	console.log(letterPressed);
+	gameOver();        			
   });
-
-//TIMER
-var number = 6;
-    var intervalId;
-    function run() {
-      intervalId = setInterval(decrement, 1000);
-      $('button').prop('disabled', true);
-}
-
-    function decrement() {
-      number--;
-      $(".pause").html("<h2>" + number + "</h2>");
-      if (number === 0) {
-        stop();
-        console.log("Resume Play");
-      }
-    }
-    function stop() {
-      clearInterval(intervalId);
-      $(".pause").html("");
-      $('button').prop('disabled', false);
-      reset();
-    }
-    function reset(){
-      number = 6
-    }
-
-//END OF GAME CODE 
-
-// JAMES'S CODE ENDS
+/*=========================================================================================================
+MAIN GAME ENDS
+=========================================================================================================*/
