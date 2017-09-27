@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-	authDomain: "project1-d8c77.firebaseapp.com",
-	databaseURL: "https://project1-d8c77.firebaseio.com",
-	projectId: "project1-d8c77",
-	storageBucket: "project1-d8c77.appspot.com",
-	messagingSenderId: "510825956303"
+	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
+	authDomain: "test-2aed2.firebaseapp.com",
+	databaseURL: "https://test-2aed2.firebaseio.com",
+	projectId: "test-2aed2",
+	storageBucket: "",
+	messagingSenderId: "737055946418"
 };
 firebase.initializeApp(config);
 
@@ -19,6 +19,8 @@ var playersRef = database.ref('players');
 var startRef = database.ref('start');
 var chatRef = database.ref('chat');
 var winnerRef = database.ref('winner');
+
+var resetRef = database.ref('reset');
 
 //browser vars
 var playersInGame;
@@ -35,6 +37,7 @@ FUNCTIONS
 =========================================================================================================*/
 
 function showGameInfo() {
+
 	$('.start').css('display', 'block');
 	$('.chat').css('display', 'block');
 }
@@ -69,6 +72,7 @@ playersRef.on('value', function(snap) {
 	else {
 		chatRef.remove();
 		startRef.remove();
+		resetRef.remove();
 
 		$('.create').hide();
 		$('.join').hide();
@@ -82,6 +86,10 @@ playersRef.on('value', function(snap) {
 playersRef.on('child_removed', function(snap) {
 	winnerRef.remove(); //remove winner's info whenever a user left
 
+	if (startRef) {
+		resetRef.push(true);
+	}
+
 	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
 	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
@@ -91,6 +99,16 @@ playersRef.on('child_removed', function(snap) {
 	/*if (myInfo.join !== true) {
 		$('.join').css('dislay', 'none');
 	}*/
+});
+
+resetRef.on('child_added', function() {
+	$('.notify').html('A player has quit during the game, please reset the game.');
+	$('.join').hide();
+	$('.chat').hide();
+
+	if (myInfo.join === true) {
+		$('.reset').show();	
+	}
 });
 
 //when start ref has value
@@ -151,7 +169,7 @@ $('.btnEnter').on('click', function(event) {
 		}
 		else {
 			//show create button if no-one already in the game
-			$('.create').css('display', 'block');
+			$('.create').css('display', 'block'); 
 		}
 	}
 	else {
@@ -169,7 +187,7 @@ $('.btnCreate').on('click', function() {
 	myRef.onDisconnect().remove();
 
 	//hide join button of host
-	$('.join').hide();
+	$('.join').hide(); 
 
 	if (playersInGame >= 1) {
 		//show start button for player created the game
@@ -231,9 +249,14 @@ $('.btnSend').on('click', function(event) {
 	}
 
 	//clear sent message from box
-	$('.newMessage').val('');
+	$('.newMessage').val(''); 
+});
+
+$('.btnReset').on('click', function() {
+	location.reload();
 });
 //the blank space below is created on purpose
+
 
 
 
@@ -273,44 +296,44 @@ var intervalId;
 //print row 1
 for (var i = 0; i < row1.length; i++) {
 	var lBtn = $("<button>");
-
+	
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row1[i]);
 	lBtn.text(row1[i]);
-
+	
 	$(".row1").append(lBtn);
 }
 
 //pring row 2
 for (var i = 0; i < row2.length; i++) {
 	var lBtn = $("<button>");
-
+	
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row2[i]);
 	lBtn.text(row2[i]);
-
+	
 	$(".row2").append(lBtn);
 }
 
 //print row 3
 for (var i = 0; i < row3.length; i++) {
 	var lBtn = $("<button>");
-
+	
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row3[i]);
 	lBtn.text(row3[i]);
-
+	
 	$(".row3").append(lBtn);
 }
 
 //print row 4
 function printRow4() {
 	var lBtn = $("<button>");
-
+	
 	lBtn.addClass("letter-button button-space letter letter-button-color");
 	lBtn.attr("data-letter", row4);
 	lBtn.text('Space');
-
+	
 	$(".row4").append(lBtn);
 }
 printRow4();
@@ -350,7 +373,6 @@ function checkLetters(letter) {
 		}
 		foodDisplayed = foodHidden.join(' ');
 		$(".word-blanks").html(foodDisplayed);
-
 	}
 	else {
 		timer();
@@ -395,7 +417,7 @@ $(".letter-button").on("click", function() {
 	checkLetters(letterPressed);
 	console.log(letterPressed);
 	gameOver();
-  });
+});
 
 // GOOGLE MAPS API
 	function initMap() {
