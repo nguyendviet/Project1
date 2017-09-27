@@ -55,7 +55,7 @@ playersRef.on('value', function(snap) {
 
 		if (myInfo.join !== true) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
-		}
+		} //this causes: game on, use quit, others can see join button and can join in the middle of the game
 
 		if ((playersInGame === 1) && startRef) {
 			startRef.remove(); //remove in game condition if players left and only 1 player left
@@ -74,17 +74,18 @@ playersRef.on('value', function(snap) {
 	console.log(playersInGame);
 });
 
-//prevent 4th player joins if game started and 1 out of 3 quits
+//prevent 4th player joins if game started and 1 out of 3 quits???
 playersRef.on('child_removed', function(snap) {
+
 	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
-	if ((playersInGame >= 2) && (myInfo.join === true)) {
+	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
-	}
+	}*/ //<<< exclude this code to prevent problem: game on, user left, in-game uses see start button
 	
-	if ((playersInGame >= 2) && (myInfo.join === false)) {
-		$('.join').hide();
-	}
+	/*if (myInfo.join !== true) {
+		$('.join').css('dislay', 'none');
+	}*/
 });
 
 //when start ref has value
