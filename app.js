@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-	authDomain: "project1-d8c77.firebaseapp.com",
-	databaseURL: "https://project1-d8c77.firebaseio.com",
-	projectId: "project1-d8c77",
-	storageBucket: "project1-d8c77.appspot.com",
-	messagingSenderId: "510825956303"
+	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
+	authDomain: "test-2aed2.firebaseapp.com",
+	databaseURL: "https://test-2aed2.firebaseio.com",
+	projectId: "test-2aed2",
+	storageBucket: "",
+	messagingSenderId: "737055946418"
 };
 firebase.initializeApp(config);
 
@@ -20,9 +20,15 @@ var startRef = database.ref('start');
 var chatRef = database.ref('chat');
 var winnerRef = database.ref('winner');
 
+var resetRef = database.ref('reset');
+
 //browser vars
 var playersInGame;
 var myInfo = {name: '', join: false, food: ''};
+
+//googlemaps api vars
+var map, infoWindow;
+var firstRun = false;
 
 console.log(myInfo);
 
@@ -31,7 +37,8 @@ FUNCTIONS
 =========================================================================================================*/
 
 function showGameInfo() {
-	$('.start').css('display', 'block'); 
+
+	$('.start').css('display', 'block');
 	$('.chat').css('display', 'block');
 }
 
@@ -42,7 +49,7 @@ function winner() {
 }
 
 /*=========================================================================================================
-FIREBASE EVENTS 
+FIREBASE EVENTS
 =========================================================================================================*/
 
 //when player ref has any value
@@ -65,6 +72,7 @@ playersRef.on('value', function(snap) {
 	else {
 		chatRef.remove();
 		startRef.remove();
+		resetRef.remove();
 
 		$('.create').hide();
 		$('.join').hide();
@@ -78,15 +86,29 @@ playersRef.on('value', function(snap) {
 playersRef.on('child_removed', function(snap) {
 	winnerRef.remove(); //remove winner's info whenever a user left
 
+	if (startRef) {
+		resetRef.push(true);
+	}
+
 	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
 	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
 	}*/ //<<< exclude this code to prevent problem: game on, user left, in-game uses see start button
-	
+
 	/*if (myInfo.join !== true) {
 		$('.join').css('dislay', 'none');
 	}*/
+});
+
+resetRef.on('child_added', function() {
+	$('.notify').html('A player has quit during the game, please reset the game.');
+	$('.join').hide();
+	$('.chat').hide();
+
+	if (myInfo.join === true) {
+		$('.reset').show();	
+	}
 });
 
 //when start ref has value
@@ -118,10 +140,12 @@ winnerRef.on('child_added', function(snap) {
 	var food = snap.val().food;
 
 	$('.notify').html('The winner is ' + name + ', and the chosen food is: ' + food);
+
+	$('.mainGame').hide();
 });
 
 /*=========================================================================================================
-BUTTON EVENTS 
+BUTTON EVENTS
 =========================================================================================================*/
 
 //log in
@@ -187,7 +211,7 @@ $('.btnJoin').on('click', function(event) {
 		var myRef = playersRef.push(myInfo);
 		myInfo.join = true;
 	}
-	
+
 	myRef.onDisconnect().remove();
 
 	$('.join').hide();
@@ -229,7 +253,12 @@ $('.btnSend').on('click', function(event) {
 	//clear sent message from box
 	$('.newMessage').val(''); 
 });
+
+$('.btnReset').on('click', function() {
+	location.reload();
+});
 //the blank space below is created on purpose
+
 
 
 
@@ -331,7 +360,7 @@ function startGame() {
 function checkLetters(letter) {
 
 	var letterInWord = false;
-	
+
 	for (var i = 0; i < numBlanks; i++) {
 		if (foodChosen[i].toLowerCase() === letter) {
 		letterInWord = true;
@@ -346,8 +375,7 @@ function checkLetters(letter) {
 		}
 		foodDisplayed = foodHidden.join(' ');
 		$(".word-blanks").html(foodDisplayed);
-
-	} 
+	}
 	else {
 		timer();
 	}
@@ -390,8 +418,87 @@ $(".letter-button").on("click", function() {
 
 	checkLetters(letterPressed);
 	console.log(letterPressed);
-	gameOver();        			
-  });
+	gameOver();
+});
 /*=========================================================================================================
 MAIN GAME ENDS
+=========================================================================================================*/
+
+/*=========================================================================================================
+GOOGLE API BEGINS
+=========================================================================================================*/
+
+// GOOGLE MAPS API
+	function initMap() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: 38.8721803,
+      lng: -77.1892915
+    },
+    zoom: 12
+  });
+  if (firstRun) {
+    infoWindow = new google.maps.InfoWindow;
+    console.log(infoWindow);
+    // Try HTML5 geolocation.
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        listRestaurants(pos, "vietnamese");
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+              lat: pos.lat,
+              lng: pos.lng
+            },
+            zoom: 12
+            // map.setCenter(pos);
+          }),
+          function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          };
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  }
+  firstRun = true;
+};
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.open(map);
+}
+
+function listRestaurants(pos, cuisine) {
+  console.log(pos);
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: pos,
+    radius: 100,
+    type: ['restaurant']
+  }, callback);
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      console.log(results[i]);
+    }
+  }
+}
+
+/*=========================================================================================================
+GOOGLE API ENDS
 =========================================================================================================*/

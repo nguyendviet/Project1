@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
-		<link rel="stylesheet" href="style.css"/> <!-- CSS TEST FILE -->
-		<title>Project1</title>
-	</head>
 
-	<body>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="style.css" />
+	<!-- CSS TEST FILE -->
+	<title>Project1</title>
+</head>
 
-		<div class="container test"> <!-- remove this outside container div when done -->
+<body>
+
+	<div class="container test">
+		<!-- remove this outside container div when done -->
 
 		<div class="container mb-2">
 			<form class="form-inline login">
@@ -35,6 +38,10 @@
 
 		<div class="container mb-2 start">
 			<button type="button" class="btn btn-primary btnStart">Start Game</button>
+		</div>
+
+		<div class="container mb-2 reset">
+			<button type="button" class="btn btn-primary btnReset">Reset</button>
 		</div>
 
 		<div class="container mb-2">
@@ -70,30 +77,28 @@
 			MAIN GAME ENDS
 		======================================================================================= -->
 
+		<div class="map" id="map">
+
+		</div>
+
 		<div class="container mb-2 chat">
 			<div class="card messageBoard"></div>
 			<form class="form-inline">
-				<input type="text" class="form-control newMessage col-xs-2" placeholder="New message">
+				<input type="text" class="form-control newMessage" placeholder="New message">
 				<button type="submit" class="btn btn-primary btnSend">Send</button>
 			</form>
 		</div>
 
+	</div>
+	<!-- remove this outside container div when done -->
 
-		<div class="container mb-2">
-			<button type="button" class="btn btn-primary btnWin">I Win!</button>
-		</div>
-		<!-- <div style="width:320pt; background:pink;"class="p-5">stuff</div> -->
-		<!-- </div> -->
+	<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh8G52VJ26LanxyxfOvKbseB8GlOgO2Pw&libraries=places&callback=initMap" async defer></script>
+	<script src="app.js"></script>
+	<!-- JS TEST FILE -->
+</body>
 
-		<!-- =======================================================================================
-			TEST AREA ENDS
-		======================================================================================= -->
-
-		<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-
-		<script src="app.js"></script> <!-- JS TEST FILE -->
-	</body>
 </html>
