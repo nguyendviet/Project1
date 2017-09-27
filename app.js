@@ -19,6 +19,7 @@ var playersRef = database.ref('players');
 var startRef = database.ref('start');
 var chatRef = database.ref('chat');
 var winnerRef = database.ref('winner');
+var resetRef = database.ref('reset');
 
 //browser vars
 var playersInGame;
@@ -65,6 +66,7 @@ playersRef.on('value', function(snap) {
 	else {
 		chatRef.remove();
 		startRef.remove();
+		resetRef.remove();
 
 		$('.create').hide();
 		$('.join').hide();
@@ -78,6 +80,10 @@ playersRef.on('value', function(snap) {
 playersRef.on('child_removed', function(snap) {
 	winnerRef.remove(); //remove winner's info whenever a user left
 
+	if (startRef) {
+		resetRef.push(true);
+	}
+
 	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
 	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
@@ -87,6 +93,16 @@ playersRef.on('child_removed', function(snap) {
 	/*if (myInfo.join !== true) {
 		$('.join').css('dislay', 'none');
 	}*/
+});
+
+resetRef.on('child_added', function() {
+	$('.notify').html('A player has quit during the game, please reset the game.');
+	$('.join').hide();
+	$('.chat').hide();
+
+	if (myInfo.join === true) {
+		$('.reset').show();	
+	}
 });
 
 //when start ref has value
@@ -228,6 +244,10 @@ $('.btnSend').on('click', function(event) {
 
 	//clear sent message from box
 	$('.newMessage').val(''); 
+});
+
+$('.btnReset').on('click', function() {
+	location.reload();
 });
 //the blank space below is created on purpose
 

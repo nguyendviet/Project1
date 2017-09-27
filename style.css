@@ -1,4 +1,4 @@
-.create, .gameId, .join, .start, .chat, .win, .mainGame {
+.create, .gameId, .join, .start, .reset, .chat, .win, .mainGame {
 	display: none;
 }
 
