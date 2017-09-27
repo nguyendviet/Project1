@@ -1,4 +1,4 @@
-.create, .gameId, .join, .start, .chat, .win {
+.create, .gameId, .join, .start, .chat, .win, .mainGame {
 	display: none;
 }
 
@@ -9,4 +9,13 @@
 
 .test {
 	border: 3px dashed orange;
+}
+
+.letter-button {
+	width: 30px;
+	height: 40px;
+}
+
+.button-space {
+	width: 120px;
 }

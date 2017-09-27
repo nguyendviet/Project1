@@ -8,13 +8,10 @@
 		<link rel="stylesheet" href="style.css"/> <!-- CSS TEST FILE -->
 		<title>Project1</title>
 	</head>
-
+	
 	<body>
 
-		<!-- =======================================================================================
-			TEST AREA BEGINS
-		======================================================================================= -->
-		<div class="container test">
+		<div class="container test"> <!-- remove this outside container div when done -->
 
 		<div class="container mb-2">
 			<form class="form-inline login">
@@ -43,6 +40,35 @@
 			<div class="alert alert-warning notify" role="alert"></div>
 		</div>
 
+		<!-- =======================================================================================
+			MAIN GAME BEGINS
+		======================================================================================= -->
+		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
+		
+		<div class="mainGame">
+			<div class='panel panel-default'>
+				<div class='panel-heading'>
+					<h3 class='panel-title'><strong>Word to Guess</strong></h3>
+				</div>
+
+				<div class='panel-body'>
+					<div class="pause"></div>
+					<!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the class called ***word-blanks***. We'll be referencing this in the JavaScript. -->
+					<h3 class='word-blanks'></h3>
+				</div>
+			</div>
+
+			<div class="row justify-content-center text-center keyboard">
+				<div class="col-12 row1"></div>
+				<div class="col-12 row2"></div>
+				<div class="col-12 row3"></div>
+				<div class="col-12 row4"></div>
+			</div>
+		</div>
+		<!-- =======================================================================================
+			MAIN GAME ENDS
+		======================================================================================= -->
+
 		<div class="container mb-2 chat">
 			<div class="card messageBoard"></div>
 			<form class="form-inline">
@@ -51,21 +77,13 @@
 			</form>
 		</div>
 
-		<div class="container mb-2 win">
-			<button type="button" class="btn btn-primary btnWin">I Win!</button>
-		</div>
-
-		</div>
-
-		<!-- =======================================================================================
-			TEST AREA ENDS
-		======================================================================================= -->
+		</div><!-- remove this outside container div when done -->
+		
 		<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh8G52VJ26LanxyxfOvKbseB8GlOgO2Pw&callback=initMap"
-    async defer></script>
+		
 		<script src="app.js"></script> <!-- JS TEST FILE -->
 	</body>
 </html>

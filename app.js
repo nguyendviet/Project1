@@ -1,13 +1,13 @@
 // Initialize Firebase
-var config = {
-	apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-	authDomain: "project1-d8c77.firebaseapp.com",
-	databaseURL: "https://project1-d8c77.firebaseio.com",
-	projectId: "project1-d8c77",
-	storageBucket: "project1-d8c77.appspot.com",
-	messagingSenderId: "510825956303"
-};
-firebase.initializeApp(config);
+  var config = {
+    apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
+    authDomain: "test-2aed2.firebaseapp.com",
+    databaseURL: "https://test-2aed2.firebaseio.com",
+    projectId: "test-2aed2",
+    storageBucket: "",
+    messagingSenderId: "737055946418"
+  };
+  firebase.initializeApp(config);
 
 /*=========================================================================================================
 GLOBAL VARS
@@ -22,7 +22,7 @@ var winnerRef = database.ref('winner');
 
 //browser vars
 var playersInGame;
-var myInfo = {name: '', join: false};
+var myInfo = {name: '', join: false, food: ''};
 
 console.log(myInfo);
 
@@ -35,6 +35,12 @@ function showGameInfo() {
 	$('.chat').css('display', 'block');
 }
 
+function winner() {
+	myInfo.food = foodChosen;
+	winnerRef.push(myInfo);
+	//issue: game automatically reset after win
+}
+
 /*=========================================================================================================
 FIREBASE EVENTS 
 =========================================================================================================*/
@@ -45,21 +51,20 @@ playersRef.on('value', function(snap) {
 
 	if (playersInGame !== 0 ) {
 		$('.notify').html('Current number of players: ' + playersInGame);
-
 		$('.create').hide(); //hide create button from others when the game is created
 
 		if (myInfo.join !== true) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
-		}
+		} //this causes: game on, use quit, others can see join button and can join in the middle of the game
 
-		if ((playersInGame === 1) && (database.ref('start'))) {
+		if ((playersInGame === 1) && startRef) {
 			startRef.remove(); //remove in game condition if players left and only 1 player left
+			$('.mainGame').hide();
 		}
 	}
 	else {
 		chatRef.remove();
 		startRef.remove();
-		winnerRef.remove();
 
 		$('.create').hide();
 		$('.join').hide();
@@ -69,25 +74,35 @@ playersRef.on('value', function(snap) {
 	console.log(playersInGame);
 });
 
-//prevent 4th player joins if game started and 1 out of 3 quits
+//prevent 4th player joins if game started and 1 out of 3 quits???
 playersRef.on('child_removed', function(snap) {
-	startRef.remove(); //stop game
+	winnerRef.remove(); //remove winner's info whenever a user left
 
-	if ((playersInGame >= 2) && (myInfo.join === true)) {
+	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
+
+	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
-	}
-	else {
-		return;
-	}
+	}*/ //<<< exclude this code to prevent problem: game on, user left, in-game uses see start button
+	
+	/*if (myInfo.join !== true) {
+		$('.join').css('dislay', 'none');
+	}*/
 });
 
 //when start ref has value
+
+//IMPORTANT: need to handle when game is on and a user left
 startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
+	gameOn = true;
 
 	$('.create').hide();
 	$('.join').hide();
 	$('.start').hide();
+
+	if (myInfo.join === true) {
+		$('.mainGame').css('display', 'block'); //only show word and keyboard to joined players
+	}
 });
 
 //play game: UNDER CONSTRUCTION
@@ -99,7 +114,10 @@ chatRef.on('child_added', function(snap) {
 
 //when winner ref has value
 winnerRef.on('child_added', function(snap) {
-	$('.notify').html('The winner is ' + snap.val());
+	var name = snap.val().name;
+	var food = snap.val().food;
+
+	$('.notify').html('The winner is ' + name + ', and the chosen food is: ' + food);
 });
 
 /*=========================================================================================================
@@ -167,7 +185,6 @@ $('.btnJoin').on('click', function(event) {
 	}
 	else {
 		var myRef = playersRef.push(myInfo);
-
 		myInfo.join = true;
 	}
 	
@@ -212,8 +229,169 @@ $('.btnSend').on('click', function(event) {
 	//clear sent message from box
 	$('.newMessage').val(''); 
 });
+//the blank space below is created on purpose
 
-//win game - just for testing (will remove this one when there is real game)
-$('.btnWin').on('click', function() {
-	winnerRef.set(myInfo);
-});
+
+
+
+
+
+
+
+
+
+//the blank space above is created on purpose
+/*=========================================================================================================
+MAIN GAME BEGINS
+=========================================================================================================*/
+var food = ["Pho", "Curry", "Lasagna", "Ramen", "Banh Mi"];
+
+//keyboard's vars
+var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+var row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+var row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+var row4 = [' '];
+
+//main game vars
+var foodChosen = "";
+var foodChosenArray = [];
+var numBlanks = 0;
+var foodHidden = [];
+var foodDisplayed = [];
+var wrongGuesses = [];
+var letterGuessed = "";
+
+//timer vars
+var countDown = 6;
+var intervalId;
+
+// PRINT QWERTY KEYBOARD
+//print row 1
+for (var i = 0; i < row1.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row1[i]);
+	lBtn.text(row1[i]);
+	
+	$(".row1").append(lBtn);
+}
+
+//pring row 2
+for (var i = 0; i < row2.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row2[i]);
+	lBtn.text(row2[i]);
+	
+	$(".row2").append(lBtn);
+}
+
+//print row 3
+for (var i = 0; i < row3.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row3[i]);
+	lBtn.text(row3[i]);
+	
+	$(".row3").append(lBtn);
+}
+
+//print row 4
+function printRow4() {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button button-space letter letter-button-color");
+	lBtn.attr("data-letter", row4);
+	lBtn.text('Space');
+	
+	$(".row4").append(lBtn);
+}
+printRow4();
+
+function startGame() {
+
+	foodChosen = food[Math.floor(Math.random() * food.length)];
+	console.log(foodChosen);
+	foodChosenArray = foodChosen.split("");
+	numBlanks = foodChosenArray.length;
+	foodhHidden = [];
+
+	for (var i = 0; i < numBlanks; i++) {
+		foodHidden.push("_");
+	}
+	console.log(foodHidden.join(" "));
+
+	foodDisplayed = foodHidden.join(' ');
+	$(".word-blanks").html(foodDisplayed);
+}
+
+function checkLetters(letter) {
+
+	var letterInWord = false;
+	
+	for (var i = 0; i < numBlanks; i++) {
+		if (foodChosen[i].toLowerCase() === letter) {
+		letterInWord = true;
+		}
+	}
+
+	if (letterInWord) {
+		for (var j = 0; j < numBlanks; j++) {
+			if (foodChosen[j].toLowerCase() === letter) {
+			foodHidden[j] = foodChosen[j];
+			}
+		}
+		foodDisplayed = foodHidden.join(' ');
+		$(".word-blanks").html(foodDisplayed);
+
+	} 
+	else {
+		timer();
+	}
+}
+
+function gameOver() {
+	if (foodChosenArray.toString() === foodHidden.toString()) {
+		console.log('You win!');
+
+		winner();
+	}
+}
+
+//TIMER's functions
+function timer() {
+	intervalId = setInterval(decrement, 1000);
+	$('button').prop('disabled', true);
+}
+
+function decrement() {
+	countDown--;
+	$(".pause").html("<h2>" + countDown + "</h2>");
+	if (countDown === 0) {
+		stop();
+		console.log("Resume Play");
+	}
+}
+
+function stop() {
+	clearInterval(intervalId);
+	$(".pause").html("");
+	$('button').prop('disabled', false);
+	countDown = 6;
+}
+
+startGame();
+
+$(".letter-button").on("click", function() {
+	var letterPressed = $(this).attr("data-letter").toLowerCase();
+
+	checkLetters(letterPressed);
+	console.log(letterPressed);
+	gameOver();        			
+  });
+/*=========================================================================================================
+MAIN GAME ENDS
+=========================================================================================================*/
