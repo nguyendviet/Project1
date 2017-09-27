@@ -76,12 +76,13 @@ playersRef.on('value', function(snap) {
 
 //prevent 4th player joins if game started and 1 out of 3 quits
 playersRef.on('child_removed', function(snap) {
-	startRef.remove(); //stop game
+	// startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
 
 	if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
 	}
-	else if ((playersInGame >= 2) && (myInfo.join === false) && startRef) {
+	
+	if ((playersInGame >= 2) && (myInfo.join === false)) {
 		$('.join').hide();
 	}
 });
