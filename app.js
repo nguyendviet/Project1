@@ -35,10 +35,6 @@ function showGameInfo() {
 	$('.chat').css('display', 'block');
 }
 
-function clear() {
-	playersRef.remove(); //might not want to clear players, maybe clear start only
-}
-
 /*=========================================================================================================
 FIREBASE EVENTS 
 =========================================================================================================*/
@@ -104,8 +100,6 @@ chatRef.on('child_added', function(snap) {
 //when winner ref has value
 winnerRef.on('child_added', function(snap) {
 	$('.notify').html('The winner is ' + snap.val());
-
-	setTimeout(clear, 1000 * 3);
 });
 
 /*=========================================================================================================
