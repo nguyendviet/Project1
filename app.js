@@ -1,13 +1,13 @@
 // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
-    authDomain: "test-2aed2.firebaseapp.com",
-    databaseURL: "https://test-2aed2.firebaseio.com",
-    projectId: "test-2aed2",
-    storageBucket: "",
-    messagingSenderId: "737055946418"
-  };
-  firebase.initializeApp(config);
+var config = {
+	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
+	authDomain: "test-2aed2.firebaseapp.com",
+	databaseURL: "https://test-2aed2.firebaseio.com",
+	projectId: "test-2aed2",
+	storageBucket: "",
+	messagingSenderId: "737055946418"
+};
+firebase.initializeApp(config);
 
 /*=========================================================================================================
 GLOBAL VARS
