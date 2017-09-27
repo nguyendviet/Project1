@@ -17,9 +17,9 @@ Write letter choices on screen -- UNDERCONSTRUCTION
     });
 
 /*=========================================================================================================
-GUESS LETTER (HANGMAN) -- UNDERCONSTRUCTION 
+HANGMAN -- UNDERCONSTRUCTION 
 =========================================================================================================*/
-      var a = ["pho", "curry", "lasagna", "ramen"];
+      var a = ["pho", "curry", "lasagna", "ramen", "cinnabon", "pizza", "chicken", "taco", "steak", "gumbo", "kimchi", "lobster", "trout", "oysters", "burger"];
   	  var b = "";
   	  var lb = [];
   	  var numBlanks = 0;
@@ -27,6 +27,7 @@ GUESS LETTER (HANGMAN) -- UNDERCONSTRUCTION
   	  var wrongGuesses = [];
       var letterGuessed = "";
 
+      var chomp = new Audio("assets/chomp.mp3");
       var win = 0;
 
 function startGame() {
@@ -61,6 +62,7 @@ function checkLetters(letter) {
     }
     var join = bns.join(' ');
     $("#word-blanks").html(join);
+    chomp.play();
 
   } else{
     run()
@@ -70,7 +72,7 @@ function checkLetters(letter) {
 function gameOver(){
   if (lb.toString() === bns.toString()) {
     win++;
-    alert("You win!");
+    console.log("You win!");
   }
 }
 startGame();
