@@ -1,9 +1,10 @@
-.create, .gameId, .join, .start, .chat, .btnWin {
+.create, .gameId, .join, .start, .chat, .win {
 	display: none;
 }
 
 .messageBoard {
 	height: 200px;
+	overflow-y: scroll;
 }
 
 .test {

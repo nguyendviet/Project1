@@ -30,7 +30,7 @@
 
 		<div class="container mb-2 join">
 			<form class="form-inline">
-				<input type="text" class="form-control gameId" placeholder="Game ID">
+				<!-- <input type="text" class="form-control gameId" placeholder="Game ID"> -->
 				<button type="submit" class="btn btn-primary btnJoin">Join Game</button>
 			</form>
 		</div>
@@ -44,18 +44,35 @@
 		</div>
 
 		<div class="container mb-2 chat">
-			<div class="card messageBoard">
-				<div class="card-block"></div>
-			</div>
+			<div class="card messageBoard"></div>
 			<form class="form-inline">
 				<input type="text" class="form-control newMessage" placeholder="New message">
 				<button type="submit" class="btn btn-primary btnSend">Send</button>
 			</form>
 		</div>
 
-		<div class="container mb-2">
+		<div class="container mb-2 win">
 			<button type="button" class="btn btn-primary btnWin">I Win!</button>
 		</div>
+
+		<!-- JAMES'S CODE BEGINS -->
+		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
+          <div class='panel panel-default'>
+            <div class='panel-heading'>
+              <h3 class='panel-title'><strong>Word to Guess</strong></h3>
+            </div>
+
+            <div class='panel-body'>
+			<div class="pause"></div>
+              <!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the id called ***word-blanks***. We'll be referencing this in the JavaScript. -->
+              <h3 id='word-blanks'>_ _ _ _ _ _ _ _ _ </h3>
+
+            </div>
+
+          </div>
+		<div id="buttons"></div>
+
+		<!-- JAMES'S CODE ENDS -->
 
 		</div>
 

@@ -13,17 +13,30 @@ firebase.initializeApp(config);
 GLOBAL VARS
 =========================================================================================================*/
 
+//firebase vars
 var database = firebase.database();
-var food = ['pizza', 'hamburger', 'pho', 'carbonara'];
-var myInfo = {name: '', host: false, join: false};
+var playersRef = database.ref('players');
+var startRef = database.ref('start');
+var chatRef = database.ref('chat');
+var winnerRef = database.ref('winner');
+
+//browser vars
 var playersInGame;
+var myInfo = {name: '', join: false};
+
+console.log(myInfo);
 
 /*=========================================================================================================
 FUNCTIONS
 =========================================================================================================*/
 
+function showGameInfo() {
+	$('.start').css('display', 'block'); 
+	$('.chat').css('display', 'block');
+}
+
 function clear() {
-	database.ref('players').remove();
+	playersRef.remove(); //might not want to clear players, maybe clear start only
 }
 
 /*=========================================================================================================
@@ -31,49 +44,48 @@ FIREBASE EVENTS
 =========================================================================================================*/
 
 //when player ref has any value
-database.ref('players').on('value', function(snap) {
+playersRef.on('value', function(snap) {
 	playersInGame = snap.numChildren();
 
 	if (playersInGame !== 0 ) {
-		$('.notify').html('Current number of players: ' + playersInGame + '. Waiting for players...');
-
+		$('.notify').html('Current number of players: ' + playersInGame);
 		$('.create').hide(); //hide create button from others when the game is created
 
-		if (myInfo.host !== true) {
+		if (myInfo.join !== true) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
-		if (playersInGame >= 2) {
-			
-			if (myInfo.name !== '') {
-				//$('.start').css('display', 'block'); //show start button when there are 2 or more players
-				$('.start').css('display', 'block'); //error: without myInfo.join, if a new user has a name, even not in the game, start button still shown. with myInfo.join, only the host can see start button.
-
-				$('.chat').css('display', 'block'); //only chow chat to player enter with a name
-			}
-		}
-
 		if ((playersInGame === 1) && (database.ref('start'))) {
-			database.ref('start').remove(); //remove in game condition if players left and only 1 player left
+			startRef.remove(); //remove in game condition if players left and only 1 player left
 		}
 	}
 	else {
-		database.ref('chat').remove();
-		database.ref('winner').remove();
-		database.ref('host').remove(); //remove host ref if 0 player. why do i need this?
-		database.ref('start').remove();
+		chatRef.remove();
+		startRef.remove();
+		winnerRef.remove();
 
-		$('.alert').html('');
-		$('.messageBoard').html('');
 		$('.create').hide();
 		$('.join').hide();
+		$('.notify').html(''); //clear notification for players not in game but don't reload browser
 	}
 
 	console.log(playersInGame);
 });
 
+//prevent 4th player joins if game started and 1 out of 3 quits
+playersRef.on('child_removed', function(snap) {
+	startRef.remove(); //stop game
+
+	if ((playersInGame >= 2) && (myInfo.join === true)) {
+		$('.start').show(); //only show start button to player already joined
+	}
+	else {
+		return;
+	}
+});
+
 //when start ref has value
-database.ref('start').on('child_added', function(snap) {
+startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
 
 	$('.create').hide();
@@ -84,12 +96,12 @@ database.ref('start').on('child_added', function(snap) {
 //play game: UNDER CONSTRUCTION
 
 //print out messages when there is a message
-database.ref('chat').on('child_added', function(snap) {
+chatRef.on('child_added', function(snap) {
 	$('.messageBoard').append(snap.val());
 });
 
 //when winner ref has value
-database.ref('winner').on('child_added', function(snap) {
+winnerRef.on('child_added', function(snap) {
 	$('.notify').html('The winner is ' + snap.val());
 
 	setTimeout(clear, 1000 * 3);
@@ -112,35 +124,42 @@ $('.btnEnter').on('click', function(event) {
 		$('.hi').html('Hi ' + name);
 
 		if (playersInGame >= 1) {
-
-			//only show join button when there is a game and the game hasn't started yet to prevent new comers interrupt the game
-			if (database.ref('start') === null) {
+			//only show join button when there is a game and the game hasn't started yet to prevent new comers from interrupting the game
+			if (startRef === null) {
 				$('.join').css('display', 'block');
 			}
 			else {
 				return;
 			}
-			
 		}
 		else {
-			$('.create').css('display', 'block'); //show create button if no-one in the game
+			//show create button if no-one already in the game
+			$('.create').css('display', 'block'); 
 		}
 	}
 	else {
 		return;
 	}
+
+	console.log(myInfo);
 });
 
 //create game, push name to firebase
 $('.btnCreate').on('click', function() {
-	var myRef = database.ref('players').push(myInfo);
+	var myRef = playersRef.push(myInfo);
+	myInfo.join = true;
 
 	myRef.onDisconnect().remove();
 
-	$('.join').hide(); //hide join button of host
+	//hide join button of host
+	$('.join').hide(); 
 
-	myInfo.host = true;
-	myInfo.join = true;
+	if (playersInGame >= 1) {
+		//show start button for player created the game
+		showGameInfo();
+	}
+
+	console.log(myInfo);
 });
 
 //join game
@@ -152,18 +171,33 @@ $('.btnJoin').on('click', function(event) {
 		return;
 	}
 	else {
-		var myRef = database.ref('players').push(myInfo); //same as create for testing
+		var myRef = playersRef.push(myInfo);
 		myInfo.join = true;
 	}
 	
 	myRef.onDisconnect().remove();
 
 	$('.join').hide();
+
+	if (playersInGame >= 2) {
+		//show start button only to players joined
+		showGameInfo();
+	}
+
+	console.log(myInfo);
 });
 
 //start game
 $('.btnStart').on('click', function(){
-	database.ref('start').set(myInfo);
+
+	if (playersInGame >=2 ) {
+		startRef.set(myInfo);
+
+		console.log(myInfo);
+	}
+	else {
+		return;
+	}
 });
 
 //create chat when a user sends a message
@@ -173,15 +207,135 @@ $('.btnSend').on('click', function(event) {
 	var message = $('.newMessage').val().trim();
 
 	if (message) {
-		database.ref('chat').push('<p>' + myInfo.name + ': ' + message + '</p>');
+		chatRef.push('<p>' + myInfo.name + ': ' + message + '</p>');
 	}
 	else {
 		return;
 	}
+
+	//clear sent message from box
+	$('.newMessage').val(''); 
 });
 
 //win game - just for testing (will remove this one when there is real game)
 $('.btnWin').on('click', function() {
-	database.ref('winner').set(myInfo);
+	winnerRef.set(myInfo);
 });
 
+
+// JAMES'S CODE BEGINS
+
+/*=========================================================================================================
+Write letter choices on screen -- UNDERCONSTRUCTION 
+=========================================================================================================*/
+    $(document).ready(function() {
+      var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "_"];
+
+
+      // DYNAMICALLY CREATE BUTTONS
+      // =================================================================================
+      for (var i = 0; i < letters.length; i++) {
+        var lBtn = $("<button>");
+        lBtn.addClass("letter-button letter letter-button-color");
+        lBtn.attr("data-letter", letters[i]);
+        lBtn.text(letters[i]);
+        $("#buttons").append(lBtn);
+      }
+    });
+
+/*=========================================================================================================
+GUESS LETTER (HANGMAN) -- UNDERCONSTRUCTION 
+=========================================================================================================*/
+      var a = ["pho", "curry", "lasagna", "ramen"];
+  	  var b = "";
+  	  var lb = [];
+  	  var numBlanks = 0;
+  	  var bns = [];
+  	  var wrongGuesses = [];
+      var letterGuessed = "";
+
+      var win = 0;
+
+function startGame() {
+
+      b = a[Math.floor(Math.random() * a.length)];
+      lb = b.split("");
+      numBlanks = lb.length;
+      console.log(b);
+      bns = [];
+      for (var i = 0; i < numBlanks; i++) {
+      bns.push("_");
+      }
+      console.log(bns.join(" "));
+      var join = bns.join(' ');
+      $("#word-blanks").html(join);
+}
+
+function checkLetters(letter) {
+
+  var letterInWord = false;
+  for (var i = 0; i < numBlanks; i++) {
+    if (b[i] === letter) {
+      letterInWord = true;
+    }
+  }
+
+  if (letterInWord) {
+    for (var j = 0; j < numBlanks; j++) {
+      if (b[j] === letter) {
+        bns[j] = letter;
+      }
+    }
+    var join = bns.join(' ');
+    $("#word-blanks").html(join);
+
+  } else{
+    run()
+  }
+}
+
+function gameOver(){
+  if (lb.toString() === bns.toString()) {
+    win++;
+    alert("You win!");
+  }
+}
+startGame();
+
+$(document).on("click", ".letter-button", function() {
+		var letterPressed = $(this).attr("data-letter").toLowerCase();
+
+            checkLetters(letterPressed);
+            console.log(letterPressed);
+            gameOver();        			
+  });
+
+//TIMER
+var number = 6;
+    var intervalId;
+    function run() {
+      intervalId = setInterval(decrement, 1000);
+      $('button').prop('disabled', true);
+}
+
+    function decrement() {
+      number--;
+      $(".pause").html("<h2>" + number + "</h2>");
+      if (number === 0) {
+        stop();
+        console.log("Resume Play");
+      }
+    }
+    function stop() {
+      clearInterval(intervalId);
+      $(".pause").html("");
+      $('button').prop('disabled', false);
+      reset();
+    }
+    function reset(){
+      number = 6
+    }
+
+//END OF GAME CODE 
+
+// JAMES'S CODE ENDS
