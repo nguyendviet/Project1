@@ -81,8 +81,8 @@ playersRef.on('child_removed', function(snap) {
 	if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
 	}
-	else {
-		return;
+	else if ((playersInGame >= 2) && (myInfo.join === false)) {
+		$('.join').hide();
 	}
 });
 
@@ -90,10 +90,13 @@ playersRef.on('child_removed', function(snap) {
 startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
 
-	$('.mainGame').css('display', 'block');
 	$('.create').hide();
 	$('.join').hide();
 	$('.start').hide();
+
+	if (myInfo.join === true) {
+		$('.mainGame').css('display', 'block'); //only show word and keyboard to joined players
+	}
 });
 
 //play game: UNDER CONSTRUCTION
