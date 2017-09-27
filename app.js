@@ -25,6 +25,7 @@ var resetRef = database.ref('reset');
 //browser vars
 var playersInGame;
 var myInfo = {name: '', join: false, food: ''};
+var chomp = new Audio("assets/chomp.mp3");
 
 //googlemaps api vars
 var map, infoWindow;
@@ -375,6 +376,7 @@ function checkLetters(letter) {
 		}
 		foodDisplayed = foodHidden.join(' ');
 		$(".word-blanks").html(foodDisplayed);
+		chomp.play();
 	}
 	else {
 		timer();
