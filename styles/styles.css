@@ -8,6 +8,10 @@
   }
   /*Someone added this and it wasn't working*/
 
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .hide {
   display: none;
 }
