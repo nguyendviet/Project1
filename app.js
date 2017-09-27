@@ -22,7 +22,7 @@ var winnerRef = database.ref('winner');
 
 //browser vars
 var playersInGame;
-var myInfo = {name: '', join: false};
+var myInfo = {name: '', join: false, food: ''};
 
 console.log(myInfo);
 
@@ -35,8 +35,10 @@ function showGameInfo() {
 	$('.chat').css('display', 'block');
 }
 
-function clear() {
-	playersRef.remove(); //might not want to clear players, maybe clear start only
+function winner() {
+	myInfo.food = foodChosen;
+	winnerRef.set(myInfo);
+	//issue: game automatically reset after win
 }
 
 /*=========================================================================================================
@@ -55,14 +57,14 @@ playersRef.on('value', function(snap) {
 			$('.join').css('display', 'block'); //only show join button to playrers not the host
 		}
 
-		if ((playersInGame === 1) && (database.ref('start'))) {
+		if ((playersInGame === 1) && startRef) {
 			startRef.remove(); //remove in game condition if players left and only 1 player left
+			$('.mainGame').hide();
 		}
 	}
 	else {
 		chatRef.remove();
 		startRef.remove();
-		winnerRef.remove();
 
 		$('.create').hide();
 		$('.join').hide();
@@ -88,6 +90,7 @@ playersRef.on('child_removed', function(snap) {
 startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
 
+	$('.mainGame').css('display', 'block');
 	$('.create').hide();
 	$('.join').hide();
 	$('.start').hide();
@@ -104,7 +107,7 @@ chatRef.on('child_added', function(snap) {
 winnerRef.on('child_added', function(snap) {
 	$('.notify').html('The winner is ' + snap.val());
 
-	setTimeout(clear, 1000 * 3);
+	console.log(snap.val());
 });
 
 /*=========================================================================================================
@@ -227,6 +230,7 @@ $('.btnSend').on('click', function(event) {
 
 
 
+//the blank space above is created on purpose
 /*=========================================================================================================
 MAIN GAME BEGINS
 =========================================================================================================*/
@@ -341,8 +345,9 @@ function checkLetters(letter) {
 
 function gameOver() {
 	if (foodChosenArray.toString() === foodHidden.toString()) {
-		// win++; don't need to increase count of win, there's only 1 game
 		console.log('You win!');
+
+		winner();
 	}
 }
 
@@ -370,7 +375,7 @@ function stop() {
 
 startGame();
 
-$(document).on("click", ".letter-button", function() {
+$(".letter-button").on("click", function() {
 	var letterPressed = $(this).attr("data-letter").toLowerCase();
 
 	checkLetters(letterPressed);
