@@ -11,19 +11,36 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
+.brown {
+  background-color: #54494b;
+}
+.white {
+  background-color: #f1f7ed;
+}
+.green {
+  background-color: #91c7b1;
+}
+.red {
+  background-color: #b33951;
+}
+.cream {
+  background-color: #eae3c5;
+}
 
 .hide {
   display: none;
 }
-  .create, .gameId, .join, .start, .chat, .btnWin {
-  	display: none;
-  }
 
-  .messageBoard {
-  	height: 200px;
-  	overflow-y: scroll;
-  }
+/*here when i got here*/
+.create, .gameId, .join, .start, .chat, .btnWin {
+	display: none;
+}
 
-  .test {
-  	border: 3px dashed orange;
-  }
+.messageBoard {
+	height: 200px;
+	overflow-y: scroll;
+}
+
+.test {
+	border: 3px dashed orange;
+}
