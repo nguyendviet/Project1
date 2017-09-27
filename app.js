@@ -216,11 +216,15 @@ $('.btnSend').on('click', function(event) {
 	//clear sent message from box
 	$('.newMessage').val(''); 
 });
+//the blank space below is created on purpose
 
-//win game - just for testing (will remove this one when there is real game)
-$('.btnWin').on('click', function() {
-	winnerRef.set(myInfo);
-});
+
+
+
+
+
+
+
 
 
 // JAMES'S CODE BEGINS
@@ -228,65 +232,106 @@ $('.btnWin').on('click', function() {
 /*=========================================================================================================
 Write letter choices on screen -- UNDERCONSTRUCTION 
 =========================================================================================================*/
-    $(document).ready(function() {
-      var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "_"];
+
+var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+var row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+var row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+var row4 = [' '];
 
 
-      // DYNAMICALLY CREATE BUTTONS
-      // =================================================================================
-      for (var i = 0; i < letters.length; i++) {
-        var lBtn = $("<button>");
-        lBtn.addClass("letter-button letter letter-button-color");
-        lBtn.attr("data-letter", letters[i]);
-        lBtn.text(letters[i]);
-        $("#buttons").append(lBtn);
-      }
-    });
+// PRINT QWERTY KEYBOARD
+// =================================================================================
+
+//print row 1
+for (var i = 0; i < row1.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row1[i]);
+	lBtn.text(row1[i]);
+	
+	$(".row1").append(lBtn);
+}
+
+//pring row 2
+for (var i = 0; i < row2.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row2[i]);
+	lBtn.text(row2[i]);
+	
+	$(".row2").append(lBtn);
+}
+
+//print row 3
+for (var i = 0; i < row3.length; i++) {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button letter letter-button-color");
+	lBtn.attr("data-letter", row3[i]);
+	lBtn.text(row3[i]);
+	
+	$(".row3").append(lBtn);
+}
+
+//print row 4
+function printRow4() {
+	var lBtn = $("<button>");
+	
+	lBtn.addClass("letter-button button-space letter letter-button-color");
+	lBtn.attr("data-letter", row4);
+	lBtn.text('Space');
+	
+	$(".row4").append(lBtn);
+}
+
+printRow4();
 
 /*=========================================================================================================
 GUESS LETTER (HANGMAN) -- UNDERCONSTRUCTION 
 =========================================================================================================*/
-      var a = ["pho", "curry", "lasagna", "ramen"];
-  	  var b = "";
-  	  var lb = [];
-  	  var numBlanks = 0;
-  	  var bns = [];
-  	  var wrongGuesses = [];
-      var letterGuessed = "";
-
-      var win = 0;
+var food = ["pho", "curry", "lasagna", "ramen"]; //for global vars, don't call them a,b,c; they are more suitable for local vars
+var foodChosen = "";
+var foodChosenArray = [];
+var numBlanks = 0;
+var foodHidden = [];
+var foodDisplayed = [];
+var wrongGuesses = [];
+var letterGuessed = "";
 
 function startGame() {
 
-      b = a[Math.floor(Math.random() * a.length)];
-      lb = b.split("");
-      numBlanks = lb.length;
-      console.log(b);
-      bns = [];
+      foodChosen = food[Math.floor(Math.random() * food.length)];
+      console.log(foodChosen);
+      foodChosenArray = foodChosen.split("");
+      numBlanks = foodChosenArray.length;
+      foodhHidden = [];
+      
       for (var i = 0; i < numBlanks; i++) {
-      bns.push("_");
+      foodHidden.push("_");
       }
-      console.log(bns.join(" "));
-      var join = bns.join(' ');
-      $("#word-blanks").html(join);
+      console.log(foodHidden.join(" "));
+      foodDisplayed = foodHidden.join(' ');
+      $("#word-blanks").html(foodDisplayed);
 }
 
 function checkLetters(letter) {
 
   var letterInWord = false;
   for (var i = 0; i < numBlanks; i++) {
-    if (b[i] === letter) {
+    if (foodChosen[i] === letter) {
       letterInWord = true;
     }
   }
 
   if (letterInWord) {
     for (var j = 0; j < numBlanks; j++) {
-      if (b[j] === letter) {
-        bns[j] = letter;
+      if (foodChosen[j] === letter) {
+        foodHidden[j] = letter;
       }
     }
-    var join = bns.join(' ');
+    var join = foodHidden.join(' ');
     $("#word-blanks").html(join);
 
   } else{
@@ -295,9 +340,9 @@ function checkLetters(letter) {
 }
 
 function gameOver(){
-  if (lb.toString() === bns.toString()) {
-    win++;
-    alert("You win!");
+  if (foodChosenArray.toString() === foodHidden.toString()) {
+    // win++; don't need to increase count of win, there's only 1 game
+    console.log('You win!');
   }
 }
 startGame();

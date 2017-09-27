@@ -10,3 +10,12 @@
 .test {
 	border: 3px dashed orange;
 }
+
+.letter-button {
+	width: 30px;
+	height: 40px;
+}
+
+.button-space {
+	width: 120px;
+}
