@@ -81,14 +81,17 @@ playersRef.on('child_removed', function(snap) {
 	if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
 	}
-	else if ((playersInGame >= 2) && (myInfo.join === false)) {
+	else if ((playersInGame >= 2) && (myInfo.join === false) && startRef) {
 		$('.join').hide();
 	}
 });
 
 //when start ref has value
+
+//IMPORTANT: need to handle when game is on and a user left
 startRef.on('child_added', function(snap) {
 	$('.notify').html(snap.val() + ' has started the game!');
+	gameOn = true;
 
 	$('.create').hide();
 	$('.join').hide();
