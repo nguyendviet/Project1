@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="style.css"/> <!-- CSS TEST FILE -->
-		<title>Project1</title>
-	</head>
-	
-	<body>
 
-		<div class="container test"> <!-- remove this outside container div when done -->
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
+	<link rel="stylesheet" href="style.css" />
+	<!-- CSS TEST FILE -->
+	<title>Project1</title>
+</head>
+
+<body>
+
+	<div class="container test">
+		<!-- remove this outside container div when done -->
 
 		<div class="container mb-2">
 			<form class="form-inline login">
@@ -44,7 +47,7 @@
 			MAIN GAME BEGINS
 		======================================================================================= -->
 		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
-		
+
 		<div class="mainGame">
 			<div class='panel panel-default'>
 				<div class='panel-heading'>
@@ -68,6 +71,9 @@
 		<!-- =======================================================================================
 			MAIN GAME ENDS
 		======================================================================================= -->
+		<div class="map" id="map">
+
+		</div>
 
 		<div class="container mb-2 chat">
 			<div class="card messageBoard"></div>
@@ -77,13 +83,16 @@
 			</form>
 		</div>
 
-		</div><!-- remove this outside container div when done -->
-		
-		<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		
-		<script src="app.js"></script> <!-- JS TEST FILE -->
-	</body>
+	</div>
+	<!-- remove this outside container div when done -->
+
+	<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh8G52VJ26LanxyxfOvKbseB8GlOgO2Pw&libraries=places&callback=initMap" async defer></script>
+	<script src="app.js"></script>
+	<!-- JS TEST FILE -->
+</body>
+
 </html>

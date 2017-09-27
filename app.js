@@ -24,6 +24,10 @@ var winnerRef = database.ref('winner');
 var playersInGame;
 var myInfo = {name: '', join: false, food: ''};
 
+//googlemaps api vars
+var map, infoWindow;
+var firstRun = false;
+
 console.log(myInfo);
 
 /*=========================================================================================================
@@ -31,7 +35,7 @@ FUNCTIONS
 =========================================================================================================*/
 
 function showGameInfo() {
-	$('.start').css('display', 'block'); 
+	$('.start').css('display', 'block');
 	$('.chat').css('display', 'block');
 }
 
@@ -42,7 +46,7 @@ function winner() {
 }
 
 /*=========================================================================================================
-FIREBASE EVENTS 
+FIREBASE EVENTS
 =========================================================================================================*/
 
 //when player ref has any value
@@ -83,7 +87,7 @@ playersRef.on('child_removed', function(snap) {
 	/*if ((playersInGame >= 2) && (myInfo.join === true)) {
 		$('.start').show(); //only show start button to player already joined
 	}*/ //<<< exclude this code to prevent problem: game on, user left, in-game uses see start button
-	
+
 	/*if (myInfo.join !== true) {
 		$('.join').css('dislay', 'none');
 	}*/
@@ -121,7 +125,7 @@ winnerRef.on('child_added', function(snap) {
 });
 
 /*=========================================================================================================
-BUTTON EVENTS 
+BUTTON EVENTS
 =========================================================================================================*/
 
 //log in
@@ -147,7 +151,7 @@ $('.btnEnter').on('click', function(event) {
 		}
 		else {
 			//show create button if no-one already in the game
-			$('.create').css('display', 'block'); 
+			$('.create').css('display', 'block');
 		}
 	}
 	else {
@@ -165,7 +169,7 @@ $('.btnCreate').on('click', function() {
 	myRef.onDisconnect().remove();
 
 	//hide join button of host
-	$('.join').hide(); 
+	$('.join').hide();
 
 	if (playersInGame >= 1) {
 		//show start button for player created the game
@@ -187,7 +191,7 @@ $('.btnJoin').on('click', function(event) {
 		var myRef = playersRef.push(myInfo);
 		myInfo.join = true;
 	}
-	
+
 	myRef.onDisconnect().remove();
 
 	$('.join').hide();
@@ -227,7 +231,7 @@ $('.btnSend').on('click', function(event) {
 	}
 
 	//clear sent message from box
-	$('.newMessage').val(''); 
+	$('.newMessage').val('');
 });
 //the blank space below is created on purpose
 
@@ -269,44 +273,44 @@ var intervalId;
 //print row 1
 for (var i = 0; i < row1.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row1[i]);
 	lBtn.text(row1[i]);
-	
+
 	$(".row1").append(lBtn);
 }
 
 //pring row 2
 for (var i = 0; i < row2.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row2[i]);
 	lBtn.text(row2[i]);
-	
+
 	$(".row2").append(lBtn);
 }
 
 //print row 3
 for (var i = 0; i < row3.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row3[i]);
 	lBtn.text(row3[i]);
-	
+
 	$(".row3").append(lBtn);
 }
 
 //print row 4
 function printRow4() {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button button-space letter letter-button-color");
 	lBtn.attr("data-letter", row4);
 	lBtn.text('Space');
-	
+
 	$(".row4").append(lBtn);
 }
 printRow4();
@@ -331,7 +335,7 @@ function startGame() {
 function checkLetters(letter) {
 
 	var letterInWord = false;
-	
+
 	for (var i = 0; i < numBlanks; i++) {
 		if (foodChosen[i].toLowerCase() === letter) {
 		letterInWord = true;
@@ -347,7 +351,7 @@ function checkLetters(letter) {
 		foodDisplayed = foodHidden.join(' ');
 		$(".word-blanks").html(foodDisplayed);
 
-	} 
+	}
 	else {
 		timer();
 	}
@@ -390,8 +394,81 @@ $(".letter-button").on("click", function() {
 
 	checkLetters(letterPressed);
 	console.log(letterPressed);
-	gameOver();        			
+	gameOver();
   });
+
+// GOOGLE MAPS API
+	function initMap() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: 38.8721803,
+      lng: -77.1892915
+    },
+    zoom: 12
+  });
+  if (firstRun) {
+    infoWindow = new google.maps.InfoWindow;
+    console.log(infoWindow);
+    // Try HTML5 geolocation.
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        listRestaurants(pos, "vietnamese");
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+              lat: pos.lat,
+              lng: pos.lng
+            },
+            zoom: 12
+            // map.setCenter(pos);
+          }),
+          function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          };
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  }
+  firstRun = true;
+};
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.open(map);
+}
+
+function listRestaurants(pos, cuisine) {
+  console.log(pos);
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: pos,
+    radius: 100,
+    type: ['restaurant']
+  }, callback);
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      console.log(results[i]);
+    }
+  }
+}
+
+// GOOGLE MAPS API
 /*=========================================================================================================
 MAIN GAME ENDS
 =========================================================================================================*/

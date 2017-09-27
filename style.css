@@ -19,3 +19,16 @@
 .button-space {
 	width: 120px;
 }
+
+/*need for google maps api*/
+#map {
+  float: left;
+  height: 50%;
+  width: 50%;
+}
+html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+/*end google maps api*/
