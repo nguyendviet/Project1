@@ -21,6 +21,7 @@ var chatRef = database.ref('chat');
 var winnerRef = database.ref('winner');
 
 var resetRef = database.ref('reset');
+var locationRef = database.ref('location');
 
 //browser vars
 var playersInGame;
@@ -74,10 +75,12 @@ playersRef.on('value', function(snap) {
       startRef.remove(); //remove in game condition if players left and only 1 player left
       $('.mainGame').hide();
     }
-  } else {
+  } 
+  else {
     chatRef.remove();
     startRef.remove();
     resetRef.remove();
+    locationRef.remove();
 
     $('.create').hide();
     $('.join').hide();
@@ -147,6 +150,13 @@ winnerRef.on('child_added', function(snap) {
   $('.notify').html('The winner is ' + name + ', and the chosen food is: ' + food);
 
   $('.mainGame').hide();
+});
+
+locationRef.on('child_added', function(snap) {
+  var name = snap.val().name;
+  var address = snap.val().address;
+
+  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address);
 });
 
 /*=========================================================================================================
@@ -516,6 +526,10 @@ function callback(results, status) {
 			var address = $(this).attr("address");
 			console.log(name,address);
 			// Viet, this is where you drive
+
+      var chosenRestaurant = {name: name, address: address};
+
+      locationRef.push(chosenRestaurant);
 		});
   }
 }
