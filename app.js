@@ -92,7 +92,6 @@ playersRef.on('value', function(snap) {
 
 playersRef.on('child_removed', function(snap) {
   winnerRef.remove(); //remove winner's info whenever a user left
-  resetRef.remove();
 
   if (startRef) {
     resetRef.push(true);
