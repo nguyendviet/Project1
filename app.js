@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
-	authDomain: "test-2aed2.firebaseapp.com",
-	databaseURL: "https://test-2aed2.firebaseio.com",
-	projectId: "test-2aed2",
-	storageBucket: "",
-	messagingSenderId: "737055946418"
+  apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
+  authDomain: "project1-d8c77.firebaseapp.com",
+  databaseURL: "https://project1-d8c77.firebaseio.com",
+  projectId: "project1-d8c77",
+  storageBucket: "project1-d8c77.appspot.com",
+  messagingSenderId: "510825956303"
 };
 firebase.initializeApp(config);
 
@@ -30,7 +30,7 @@ var myInfo = {
   join: false,
   food: ''
 };
-var chomp = new Audio("assets/chomp.mp3");
+// var chomp = new Audio("assets/chomp.mp3");
 
 //googlemaps api vars
 var map, infoWindow, pos;
@@ -363,6 +363,8 @@ function startGame() {
   foodDisplayed = foodHidden.join(' ');
   $(".word-blanks").html(foodDisplayed);
 }
+  
+var audio = $('.sound')[0]; //sound var
 
 function checkLetters(letter) {
 
@@ -382,9 +384,11 @@ function checkLetters(letter) {
     }
     foodDisplayed = foodHidden.join(' ');
     $(".word-blanks").html(foodDisplayed);
-    chomp.play();
+    // chomp.play();
+    audio.play(); //play sound. works
   } else {
     timer();
+
   }
 }
 
@@ -426,6 +430,7 @@ $(".letter-button").on("click", function() {
   checkLetters(letterPressed);
   console.log(letterPressed);
   gameOver();
+  
 });
 /*=========================================================================================================
 MAIN GAME ENDS
