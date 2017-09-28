@@ -514,6 +514,7 @@ function callback(results, status) {
 		$("#foodList").on("click",".foodLink",function(){
 			var name = $(this).attr("name");
 			var address = $(this).attr("address");
+			console.log(name,address);
 			// Viet, this is where you drive
 		});
   }
