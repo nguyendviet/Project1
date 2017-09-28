@@ -512,8 +512,9 @@ function callback(results, status) {
     $("#foodList").html(list);
 		addMapMarker(pos);
 		$("#foodList").on("click",".foodLink",function(){
-			console.log($(this).attr("name"));
-			console.log($(this).attr("address"));
+			var name = $(this).attr("name");
+			var address = $(this).attr("address");
+			// Viet, this is where you drive
 		});
   }
 }
