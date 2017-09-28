@@ -21,6 +21,11 @@
 }
 
 /*need for google maps api*/
+#foodList{
+	height:200px;
+	width:100%;
+	overflow-y: scroll;
+}
 #map {
   float: left;
   height: 50%;
