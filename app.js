@@ -108,7 +108,7 @@ resetRef.on('child_added', function() {
 	$('.chat').hide();
 
 	if (myInfo.join === true) {
-		$('.reset').show();	
+		$('.reset').show();
 	}
 });
 
@@ -172,7 +172,7 @@ $('.btnEnter').on('click', function(event) {
 		}
 		else {
 			//show create button if no-one already in the game
-			$('.create').css('display', 'block'); 
+			$('.create').css('display', 'block');
 		}
 	}
 	else {
@@ -190,7 +190,7 @@ $('.btnCreate').on('click', function() {
 	myRef.onDisconnect().remove();
 
 	//hide join button of host
-	$('.join').hide(); 
+	$('.join').hide();
 
 	if (playersInGame >= 1) {
 		//show start button for player created the game
@@ -252,7 +252,7 @@ $('.btnSend').on('click', function(event) {
 	}
 
 	//clear sent message from box
-	$('.newMessage').val(''); 
+	$('.newMessage').val('');
 });
 
 $('.btnReset').on('click', function() {
@@ -299,44 +299,45 @@ var intervalId;
 //print row 1
 for (var i = 0; i < row1.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row1[i]);
 	lBtn.text(row1[i]);
-	
+
 	$(".row1").append(lBtn);
 }
 
 //pring row 2
 for (var i = 0; i < row2.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row2[i]);
 	lBtn.text(row2[i]);
-	
+
 	$(".row2").append(lBtn);
 }
 
 //print row 3
 for (var i = 0; i < row3.length; i++) {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button letter letter-button-color");
 	lBtn.attr("data-letter", row3[i]);
 	lBtn.text(row3[i]);
-	
+
 	$(".row3").append(lBtn);
 }
 
 //print row 4
 function printRow4() {
 	var lBtn = $("<button>");
-	
+
 	lBtn.addClass("letter-button button-space letter letter-button-color");
 	lBtn.attr("data-letter", row4);
 	lBtn.text('Space');
-	
+
+
 	$(".row4").append(lBtn);
 }
 printRow4();

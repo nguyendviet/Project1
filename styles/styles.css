@@ -6,11 +6,12 @@
     float: left;
     margin: 2px;
   }
-  /*Someone added this and it wasn't working*/
-
+/*Someone added this and it wasn't working*/
+/*sets game font*/
 body {
   font-family: 'Montserrat', sans-serif;
 }
+/*color styles*/
 .brown {
   background-color: #54494b;
 }
@@ -30,7 +31,20 @@ body {
 .hide {
   display: none;
 }
+.letter {
+  width:2em;
+  margin: .25em;
+}
+.button-space {
+  width: 5em;
+}
+.letter-button {
 
+}
+.letter-button-color {
+  background-color: transparent;
+  border: none;
+}
 /*here when i got here*/
 .create, .gameId, .join, .start, .chat, .btnWin {
 	display: none;
