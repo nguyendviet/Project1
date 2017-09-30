@@ -1,16 +1,3 @@
-/*Someone added this and it wasn't working*/
-  .correctletter {
-    width: 50px;
-    height: 50px;
-    padding: 2px;
-    float: left;
-    margin: 2px;
-  }
-/*Someone added this and it wasn't working*/
-/*sets game font*/
-body {
-  font-family: 'Montserrat', sans-serif;
-}
 /*color styles*/
 .brown {
   background-color: #54494b;
@@ -34,6 +21,27 @@ body {
 .hide {
   display: none;
 }
+/*sets game font*/
+html {
+  height: 100%;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+   background: linear-gradient(#54494b, black);
+   height: 100%;
+}
+.main.container {
+    border-radius: 6px;
+}
+/*login*/
+.hi {
+  color: white;
+  background: #54494b;
+  padding: 5px;
+  margin: 0;
+  border-radius: 3px;
+}
+/*the game*/
 .mainGame .card.white {
   border: 1px solid #b33951;
   color: #54494b;
@@ -46,6 +54,12 @@ body {
 .letter {
   width:2em;
   margin: .25em;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(136,136,136,1);
+  transition: box-shadow .2s ease-in-out;
+}
+.letter:hover {
+  box-shadow:1px 1px 4px rgba(136,136,136,.1);
 }
 .button-space {
   width: 5em;

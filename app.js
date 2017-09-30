@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-  authDomain: "project1-d8c77.firebaseapp.com",
-  databaseURL: "https://project1-d8c77.firebaseio.com",
-  projectId: "project1-d8c77",
-  storageBucket: "project1-d8c77.appspot.com",
-  messagingSenderId: "510825956303"
+	apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
+	authDomain: "project1-d8c77.firebaseapp.com",
+	databaseURL: "https://project1-d8c77.firebaseio.com",
+	projectId: "project1-d8c77",
+	storageBucket: "project1-d8c77.appspot.com",
+	messagingSenderId: "510825956303"
 };
 firebase.initializeApp(config);
 
@@ -165,14 +165,13 @@ BUTTON EVENTS
 //log in
 $('.btnEnter').on('click', function(event) {
 	event.preventDefault();
-
+	var hi = $('<div class="hi text-center">');
 	var name = $('.name').val().trim();
-
 	if (name) {
 		myInfo.name = name;
 
 		$('.login').hide();
-		$('.hi').html('Hi ' + name);
+		$('.login-container').append(hi.html('Hi '+ name + "." + "<br />Welcome to Thought For Food!"));
 
 		if (playersInGame >= 1) {
 			//only show join button when there is a game and the game hasn't started yet to prevent new comers from interrupting the game
