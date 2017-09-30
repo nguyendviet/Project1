@@ -16,7 +16,7 @@ body {
   background-color: #54494b;
 }
 .white {
-  background-color: #f1f7ed;
+  background-color: #fcf8e3;
 }
 .green {
   background-color: #91c7b1;
@@ -27,9 +27,21 @@ body {
 .cream {
   background-color: #eae3c5;
 }
-
+/*styling basics*/
+.fill {
+  width: 100%;
+}
 .hide {
   display: none;
+}
+.mainGame .card.white {
+  border: 1px solid #b33951;
+  color: #54494b;
+}
+
+.game-row .card {
+  margin-left: auto;
+  margin-right: auto;
 }
 .letter {
   width:2em;
@@ -42,7 +54,8 @@ body {
 
 }
 .letter-button-color {
-  background-color: transparent;
+  background-color: #eae3c5;
+  border-radius: 3px;
   border: none;
 }
 /*here when i got here*/
@@ -56,5 +69,5 @@ body {
 }
 
 .test {
-	border: 3px dashed orange;
+	border: 2px solid #8a6d3b;
 }

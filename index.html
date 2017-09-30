@@ -12,9 +12,9 @@
 	<title>Project1</title>
 </head>
 
-<body>
+<body class='p-3'>
 
-	<div class="container test cream">
+	<div class="container test p-3 cream">
 		<!-- remove this outside container div when done -->
 
 		<div class="container mb-2">
@@ -53,18 +53,21 @@
 		======================================================================================= -->
 		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
 
-		<div class="mainGame">
-			<div class='card'>
-					<h3 class='card-title'><strong>Word to Guess</strong></h3>
-					<div class='card-body'>
-					<div class="pause"></div>
-					<!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the class called ***word-blanks***. We'll be referencing this in the JavaScript. -->
-					<h3 class='word-blanks'></h3>
+			<div class="mainGame">
+				<div class="row game-row">
+					<div class='card col-sm-8 d-block text-center mb-2 pt-3 pb-3 white'>
+						<h3 class='card-title'><strong>Word to Guess</strong></h3>
+						<div class='card-body'>
+						<div class="pause"></div>
+						<!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the class called ***word-blanks***. We'll be referencing this in the JavaScript. -->
+						<h3 class='word-blanks'></h3>
+					</div>
 				</div>
 			</div>
 
-			<div class="row justify-content-center text-center keyboard">
-				<div class="card col-sm-8 pt-3 pb-3">
+
+			<div class="row keyboard justify-content-center text-center ">
+				<div class="card col-sm-8 pt-3 pb-3 white">
 					<div class=" row1"></div>
 					<div class=" row2"></div>
 					<div class=" row3"></div>
