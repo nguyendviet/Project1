@@ -38,6 +38,11 @@ var firstRun = false;
 
 console.log(myInfo);
 
+//w3w api vars
+var reslat;
+var reslong;
+var latlng;
+
 /*=========================================================================================================
 FUNCTIONS
 =========================================================================================================*/
@@ -281,7 +286,7 @@ $('.btnReset').on('click', function() {
 /*=========================================================================================================
 MAIN GAME BEGINS
 =========================================================================================================*/
-var food = ["Pho", "Curry", "Lasagna", "Ramen", "Banh Mi"];
+var food = ["Banh Mi", "Chicken Parm", "Curry", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];
 
 //keyboard's vars
 var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
@@ -525,6 +530,10 @@ function callback(results, status) {
 			+ "' address='" + results[i].vicinity + "'>")
 			.html(results[i]
 			.name + "<br>" + results[i].vicinity));
+      reslat = results[i].geometry.location.lat();
+      reslong = results[i].geometry.location.lng();
+      latlng = String(reslat)+","+String (reslong);
+      w3w();
     }
     $("#foodList").html(list);
 		addMapMarker(pos);
@@ -544,3 +553,25 @@ function callback(results, status) {
 /*=========================================================================================================
 GOOGLE API ENDS
 =========================================================================================================*/
+
+/*=========================================================================================================
+w3w API
+=========================================================================================================*/
+ 
+function w3w() {
+     var queryURL = "https://api.what3words.com/v2/reverse?coords=" + latlng + "&display=full&format=json&key=9I7B51YQ"
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+      .done(function(response){
+        console.log(queryURL);
+        console.log(response);
+        console.log(response.words);
+    })
+};
+
+/*=========================================================================================================
+w3w API ENDS
+=========================================================================================================*/
+
