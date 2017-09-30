@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyA72vDuoXTFrA6BRNHNmbfU95BRQcJ_F4s",
-	authDomain: "thought-for-food-aed70.firebaseapp.com",
-	databaseURL: "https://thought-for-food-aed70.firebaseio.com",
-	projectId: "thought-for-food-aed70",
-	storageBucket: "",
-	messagingSenderId: "469836775735"
+	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
+	authDomain: "test-2aed2.firebaseapp.com",
+	databaseURL: "https://test-2aed2.firebaseio.com",
+	projectId: "test-2aed2",
+	storageBucket: "test-2aed2.appspot.com",
+	messagingSenderId: "737055946418"
 };
 firebase.initializeApp(config);
 
@@ -42,6 +42,8 @@ console.log(myInfo);
 var reslat;
 var reslong;
 var latlng;
+var w3wMap;
+var w3wWords;
 
 /*=========================================================================================================
 FUNCTIONS
@@ -160,7 +162,8 @@ locationRef.on('child_added', function(snap) {
   var name = snap.val().name;
   var address = snap.val().address;
 
-  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address);
+  //final message: name of chosen restaurant and address
+  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address + ' address in 3 words: ' + '<a href="' + w3wMap + '" target="_blank">' + w3wWords + '</a>');
 });
 
 /*=========================================================================================================
@@ -568,6 +571,9 @@ function w3w() {
         console.log(queryURL);
         console.log(response);
         console.log(response.words);
+
+        w3wWords = response.words;
+        w3wMap = response.map;
     })
 };
 
