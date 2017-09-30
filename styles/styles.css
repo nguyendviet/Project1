@@ -21,6 +21,25 @@
 .hide {
   display: none;
 }
+/*button overrides*/
+.form-control:focus {
+  color: #464a4c;
+  border-color: #b33951;
+  outline: 0;
+  }
+.btn-primary {
+  color: #fff;
+  background-color: #b33951;
+  border-color: #742434;
+}
+.btn-primary:hover {
+  background-color: #742434;
+  border-color: #b33951;
+}
+/*sets display none property*/
+.create, .gameId, .reset, .join, .start, .chat, .btnWin {
+	display: none;
+}
 /*sets game font*/
 html {
   height: 100%;
@@ -72,15 +91,16 @@ body {
   border-radius: 3px;
   border: none;
 }
-/*here when i got here*/
-.create, .gameId, .join, .start, .chat, .btnWin {
-	display: none;
-}
-
+/*messageBoard*/
 .messageBoard {
 	height: 200px;
 	overflow-y: scroll;
 }
+.messageBoard > p {
+  margin-bottom: .25rem;
+  color: #54494b;
+}
+/*here when i got here*/
 
 .test {
 	border: 2px solid #8a6d3b;

@@ -19,8 +19,12 @@
 
 		<div class="container login-container mb-2">
 			<form class="form-inline login">
-				<input type="text" class="form-control name" placeholder="Name">
-				<button type="submit" class="btn btn-primary btnEnter">Enter</button>
+				<div class='input-group col-sm-12 pl-0 pr-0'>
+					<input type="text" class="form-control form-control-sm name" placeholder="Enter your name">
+					<span class='input-group-btn'>
+						<button type="submit" class="btn btn-sm btn-primary btnEnter">Enter</button>
+					</span>
+				</div>
 			</form>
 			<!-- <div class="alert alert-success hi" role="alert"></div> -->
 		</div>
@@ -44,8 +48,8 @@
 			<button type="button" class="btn btn-primary btnReset">Reset</button>
 		</div>
 
-		<div class="container mb-2">
-			<div class="alert alert-warning notify" role="alert"></div>
+		<div class="container mb-2 notify">
+			<div class="alert alert-warning" role="alert"></div>
 		</div>
 
 		<!-- =======================================================================================
@@ -53,7 +57,7 @@
 		======================================================================================= -->
 		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
 
-			<div class="mainGame">
+			<div class="mainGame container">
 				<div class="row game-row">
 					<div class='card col-sm-8 d-block text-center mb-2 pt-3 pb-3 white'>
 						<h3 class='card-title'><strong>Word to Guess</strong></h3>
@@ -91,10 +95,14 @@
 		</div>
 
 		<div class="container mb-2 chat">
-			<div class="card messageBoard"></div>
+			<div class="card messageBoard mb-2 pt-1 pl-2 pr-2 pb-1"></div>
 			<form class="form-inline">
-				<input type="text" class="form-control newMessage" placeholder="New message">
-				<button type="submit" class="btn btn-primary btnSend">Send</button>
+				<div class="input-group col-sm-12 pl-0 pr-0">
+					<input type="text" class="form-control form-control-sm newMessage" placeholder="Say something...">
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-sm btn-primary btnSend">Send</button>
+					</span>
+				</div>
 			</form>
 		</div>
 

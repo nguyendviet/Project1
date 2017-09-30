@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-	authDomain: "project1-d8c77.firebaseapp.com",
-	databaseURL: "https://project1-d8c77.firebaseio.com",
-	projectId: "project1-d8c77",
-	storageBucket: "project1-d8c77.appspot.com",
-	messagingSenderId: "510825956303"
+	apiKey: "AIzaSyA72vDuoXTFrA6BRNHNmbfU95BRQcJ_F4s",
+	authDomain: "thought-for-food-aed70.firebaseapp.com",
+	databaseURL: "https://thought-for-food-aed70.firebaseio.com",
+	projectId: "thought-for-food-aed70",
+	storageBucket: "",
+	messagingSenderId: "469836775735"
 };
 firebase.initializeApp(config);
 
@@ -260,7 +260,7 @@ $('.btnSend').on('click', function(event) {
   var message = $('.newMessage').val().trim();
 
   if (message) {
-    chatRef.push('<p>' + myInfo.name + ': ' + message + '</p>');
+    chatRef.push('<p><strong>' + myInfo.name + '</strong>: ' + message + '</p>');
   } else {
     return;
   }
@@ -557,7 +557,7 @@ GOOGLE API ENDS
 /*=========================================================================================================
 w3w API
 =========================================================================================================*/
- 
+
 function w3w() {
      var queryURL = "https://api.what3words.com/v2/reverse?coords=" + latlng + "&display=full&format=json&key=9I7B51YQ"
       $.ajax({
@@ -574,4 +574,3 @@ function w3w() {
 /*=========================================================================================================
 w3w API ENDS
 =========================================================================================================*/
-
