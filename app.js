@@ -42,6 +42,8 @@ console.log(myInfo);
 var reslat;
 var reslong;
 var latlng;
+var w3wMap;
+var w3wWords;
 
 /*=========================================================================================================
 FUNCTIONS
@@ -89,6 +91,8 @@ playersRef.on('value', function(snap) {
 
     $('.create').hide();
     $('.join').hide();
+		$('#foodList').hide(); // TEST
+		$('.main.container').hide(); //TEST
     $('.notify').html(''); //clear notification for players not in game but don't reload browser
   }
 
@@ -160,7 +164,8 @@ locationRef.on('child_added', function(snap) {
   var name = snap.val().name;
   var address = snap.val().address;
 
-  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address);
+  //final message: name of chosen restaurant and address
+  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address + ' address in 3 words: ' + '<a href="' + w3wMap + '" target="_blank">' + w3wWords + '</a>');
 });
 
 /*=========================================================================================================
@@ -355,7 +360,10 @@ function printRow4() {
 printRow4();
 
 function startGame() {
-
+	$('#myModal').modal('show')
+	$('#myModal').on('hidden.bs.modal', function (e) {
+		$('.main.container').show()
+})
   foodChosen = food[Math.floor(Math.random() * food.length)];
   console.log(foodChosen);
   foodChosenArray = foodChosen.split("");
@@ -523,6 +531,7 @@ function listRestaurants(pos) {
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
+		$('#foodList').show();
     var list = $("<ul>");
     for (var i = 0; i < results.length; i++) {
       console.log(results[i])
@@ -568,6 +577,9 @@ function w3w() {
         console.log(queryURL);
         console.log(response);
         console.log(response.words);
+
+        w3wWords = response.words;
+        w3wMap = response.map;
     })
 };
 

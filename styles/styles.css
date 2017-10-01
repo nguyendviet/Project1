@@ -37,7 +37,7 @@
   border-color: #b33951;
 }
 /*sets display none property*/
-.create, .gameId, .reset, .join, .start, .chat, .btnWin {
+.create, .gameId, .reset, .join, .start, /**/.mainGame,/**/.chat, .btnWin {
 	display: none;
 }
 /*sets game font*/
@@ -49,6 +49,15 @@ body {
    background: linear-gradient(#54494b, black);
    height: 100%;
 }
+/*modal styling*/
+.modal-title {
+font-weight: bold;
+margin-left: auto;
+margin-right: auto;
+font-size: 3rem;
+color: #274e3e;
+}
+
 .main.container {
     border-radius: 6px;
 }
@@ -70,12 +79,14 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
 .letter {
-  width:2em;
-  margin: .25em;
+  width: 20px;
+  margin: 1px;
   cursor: pointer;
   box-shadow: 2px 2px 5px rgba(136,136,136,1);
   transition: box-shadow .2s ease-in-out;
+  font-size: 85%;
 }
 .letter:hover {
   box-shadow:1px 1px 4px rgba(136,136,136,.1);
@@ -93,8 +104,9 @@ body {
 }
 /*messageBoard*/
 .messageBoard {
-	height: 200px;
-	overflow-y: scroll;
+  border: 1px solid #b33951;
+	height: 150px;
+	overflow-y: auto;
 }
 .messageBoard > p {
   margin-bottom: .25rem;
@@ -105,3 +117,40 @@ body {
 .test {
 	border: 2px solid #8a6d3b;
 }
+#foodList {
+  height: 150px;
+  overflow-y: scroll;
+  background: white;
+}
+li.foodLink {
+    font-size: 80%;
+    padding-bottom: 8px;
+    list-style: none;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query since this is the default in Bootstrap */
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) {
+  .letter {
+    width: 2em;
+    margin: 2px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(136,136,136,1);
+    transition: box-shadow .2s ease-in-out;
+    font-size: 95%;
+  }
+  .letter-button.button-space {
+    width: 10rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) { ... }
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) { ... }
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) { ... }
