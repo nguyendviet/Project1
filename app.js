@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
-	authDomain: "test-2aed2.firebaseapp.com",
-	databaseURL: "https://test-2aed2.firebaseio.com",
-	projectId: "test-2aed2",
-	storageBucket: "test-2aed2.appspot.com",
-	messagingSenderId: "737055946418"
+	apiKey: "AIzaSyA72vDuoXTFrA6BRNHNmbfU95BRQcJ_F4s",
+	authDomain: "thought-for-food-aed70.firebaseapp.com",
+	databaseURL: "https://thought-for-food-aed70.firebaseio.com",
+	projectId: "thought-for-food-aed70",
+	storageBucket: "",
+	messagingSenderId: "469836775735"
 };
 firebase.initializeApp(config);
 
@@ -91,6 +91,8 @@ playersRef.on('value', function(snap) {
 
     $('.create').hide();
     $('.join').hide();
+		$('#foodList').hide(); // TEST
+		// $('.main.container').hide(); //TEST
     $('.notify').html(''); //clear notification for players not in game but don't reload browser
   }
 
@@ -358,6 +360,7 @@ function printRow4() {
 printRow4();
 
 function startGame() {
+	$('#myModal').modal('show');
 
   foodChosen = food[Math.floor(Math.random() * food.length)];
   console.log(foodChosen);
@@ -526,6 +529,7 @@ function listRestaurants(pos) {
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
+		$('#foodList').show();
     var list = $("<ul>");
     for (var i = 0; i < results.length; i++) {
       console.log(results[i])
