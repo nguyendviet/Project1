@@ -180,7 +180,9 @@ $('.btnEnter').on('click', function(event) {
 	if (name) {
 		myInfo.name = name;
 
+
 		$('.login').hide();
+		$('.instructions').hide();
 		$('.login-container').append(hi.html('Hi '+ name + "." + "<br />Welcome to Thought For Food!"));
 
 		if (playersInGame >= 1) {
