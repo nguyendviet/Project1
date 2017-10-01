@@ -173,7 +173,7 @@ BUTTON EVENTS
 =========================================================================================================*/
 
 //log in
-$('.btnEnter').on('click', function(event) {
+$('.btn-submit').on('click', function(event) {
 	event.preventDefault();
 	var hi = $('<div class="hi text-center">');
 	var name = $('.name').val().trim();
@@ -183,7 +183,7 @@ $('.btnEnter').on('click', function(event) {
 
 		$('.login').hide();
 		$('.instructions').hide();
-		$('.login-container').append(hi.html('Hi '+ name + "." + "<br />Welcome to Thought For Food!"));
+		$('.login-container').append(hi.html('Hi '+ name + "." + "<br />Are you ready to start?"));
 
 		if (playersInGame >= 1) {
 			//only show join button when there is a game and the game hasn't started yet to prevent new comers from interrupting the game

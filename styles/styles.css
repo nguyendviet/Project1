@@ -21,6 +21,18 @@
 .fill {
   width: 100%;
 }
+.left {
+  float: left;
+}
+.clear {
+  clear: both;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
 .hide {
   display: none;
 }
@@ -31,13 +43,13 @@
   outline: 0;
   }
 .btn-primary {
-  color: #fff;
-  background-color: #b33951;
-  border-color: #742434;
+  background-color: #274e3e;
+  color: #eae3c5;
+  border-color: #438369;
 }
 .btn-primary:hover {
-  background-color: #742434;
-  border-color: #b33951;
+  background-color: #438369;
+  border-color: #274e3e;
 }
 /*sets display none property*/
 .create, .gameId, .reset, .join, .start, /**/.mainGame,/**/.chat, .btnWin {
@@ -54,15 +66,18 @@ body {
 }
 /*modal styling*/
 .modal-header {
-background-color: #274e3e;
+  background-color: #274e3e;
+}
+.modal-header h5 {
+  text-align: center;
 }
 .modal-title {
-font-weight: bold;
-margin-left: auto;
-margin-right: auto;
-font-size: 3rem;
-background-color: #274e3e;
-color: #eae3c5;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 3rem;
+  background-color: #274e3e;
+  color: #eae3c5;
 }
 .img-container {
   width: 500px;
@@ -93,9 +108,23 @@ color: #eae3c5;
     border-radius: 6px;
 }
 /*login*/
+.welcome {
+  text-align: center;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: #274e3e;
+  color: #eae3c5;
+}
+.btn-submit {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #274e3e;
+  color: #eae3c5;
+}
 .hi {
-  color: white;
-  background: #54494b;
+  color: #eae3c5;
+  background: #274e3e;
   padding: 5px;
   margin: 0;
   border-radius: 3px;
