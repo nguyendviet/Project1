@@ -37,7 +37,7 @@
   border-color: #b33951;
 }
 /*sets display none property*/
-.create, .gameId, .reset, .join, .start, /**/.mainGame,/* */.chat, .btnWin {
+.create, .gameId, .reset, .join, .start, /**/.mainGame,/**/.chat, .btnWin {
 	display: none;
 }
 /*sets game font*/
