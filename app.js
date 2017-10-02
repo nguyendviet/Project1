@@ -1,13 +1,13 @@
-// Initialize Firebase
-var config = {
-	apiKey: "AIzaSyCD_pC5K12ZEaKvBgbkCdqBgDklBSpzxCA",
-	authDomain: "test-2aed2.firebaseapp.com",
-	databaseURL: "https://test-2aed2.firebaseio.com",
-	projectId: "test-2aed2",
-	storageBucket: "test-2aed2.appspot.com",
-	messagingSenderId: "737055946418"
-};
-firebase.initializeApp(config);
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDLW7IpdzxFnMN1-j_Gy30fmPrkCMdFrXQ",
+    authDomain: "hangman-a7bac.firebaseapp.com",
+    databaseURL: "https://hangman-a7bac.firebaseio.com",
+    projectId: "hangman-a7bac",
+    storageBucket: "hangman-a7bac.appspot.com",
+    messagingSenderId: "23417614471"
+  };
+  firebase.initializeApp(config);
 
 /*=========================================================================================================
 GLOBAL VARS
@@ -45,9 +45,21 @@ var latlng;
 var w3wMap;
 var w3wWords;
 
+var jingle = $('.jingle')[0]; //sound var
+
+
 /*=========================================================================================================
 FUNCTIONS
 =========================================================================================================*/
+function playJingle() { 
+    jingle.play(); 
+} 
+playJingle();
+
+function stopJingle(){
+  jingle.pause();
+}
+
 
 function showGameInfo() {
 
@@ -60,6 +72,7 @@ function winner() {
   winnerRef.push(myInfo);
   //issue: game automatically reset after win
   initMap();
+  playJingle();
 }
 
 /*=========================================================================================================
@@ -138,6 +151,7 @@ startRef.on('child_added', function(snap) {
 
   if (myInfo.join === true) {
     $('.mainGame').css('display', 'block'); //only show word and keyboard to joined players
+    stopJingle();
   }
 });
 
@@ -287,7 +301,7 @@ $('.btnReset').on('click', function() {
 /*=========================================================================================================
 MAIN GAME BEGINS
 =========================================================================================================*/
-var food = ["Banh Mi", "Chicken Parm", "Curry", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];
+var food = ["Ackee","Asado","Bandeja Paisa","Buffalo Wing","Banh Mi","Bulgogi", "Carne Asada","Chicken Parm","Chilli", "Corned Beef","Couscous", "Curry", "Dim Sum","Falafel", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];
 
 //keyboard's vars
 var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
@@ -372,6 +386,7 @@ function startGame() {
 }
   
 var audio = $('.sound')[0]; //sound var
+var wrong = $('.wrong')[0]; //sound var
 
 function checkLetters(letter) {
 
@@ -395,6 +410,7 @@ function checkLetters(letter) {
     audio.play(); //play sound. works
   } else {
     timer();
+    wrong.play();
 
   }
 }
