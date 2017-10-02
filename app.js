@@ -1,11 +1,11 @@
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDLW7IpdzxFnMN1-j_Gy30fmPrkCMdFrXQ",
-    authDomain: "hangman-a7bac.firebaseapp.com",
-    databaseURL: "https://hangman-a7bac.firebaseio.com",
-    projectId: "hangman-a7bac",
-    storageBucket: "hangman-a7bac.appspot.com",
-    messagingSenderId: "23417614471"
+    apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
+    authDomain: "project1-d8c77.firebaseapp.com",
+    databaseURL: "https://project1-d8c77.firebaseio.com",
+    projectId: "project1-d8c77",
+    storageBucket: "project1-d8c77.appspot.com",
+    messagingSenderId: "510825956303"
   };
   firebase.initializeApp(config);
 
