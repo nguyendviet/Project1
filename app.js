@@ -71,7 +71,11 @@ playersRef.on('value', function(snap) {
   playersInGame = snap.numChildren();
 
   if (playersInGame !== 0) {
-    $('.notify').html('Current number of players: ' + playersInGame);
+		if(playersInGame === 1) {
+    $('.notify').html('There is <strong>' + playersInGame + '</strong> person ready to play.');
+	} else {
+		$('.notify').html('There are <strong>' + playersInGame + ' </strong> people playing the game.');
+	}
     $('.create').hide(); //hide create button from others when the game is created
 
     if (myInfo.join !== true) {
@@ -183,7 +187,7 @@ $('.btn-submit').on('click', function(event) {
 
 		$('.login').hide();
 		$('.instructions').hide();
-		$('.login-container').append(hi.html('Hi '+ name + "." + "<br />Are you ready to start?"));
+		$('.login-container').append(hi.html('<h3 class="mt-2">Hi <p class="inline">'+ name + "</p>.</h3>" + '<p class="text-center mb-2">Are you ready to start?</p>'));
 
 		if (playersInGame >= 1) {
 			//only show join button when there is a game and the game hasn't started yet to prevent new comers from interrupting the game
@@ -265,15 +269,17 @@ $('.btnSend').on('click', function(event) {
   event.preventDefault();
 
   var message = $('.newMessage').val().trim();
-
+	// var objDiv = document.getElementById("divExample");
+	// objDiv.scrollTop = objDiv.scrollHeight;
   if (message) {
-    chatRef.push('<p><strong>' + myInfo.name + '</strong>: ' + message + '</p>');
+    chatRef.push('<p class="clear"><strong>' + myInfo.name + '</strong>: ' + message + '</p>');
   } else {
     return;
   }
 
 	//clear sent message from box
 	$('.newMessage').val('');
+	$('.messageBoard').scrollTop($('.messageBoard')[0].scrollHeight);
 });
 
 $('.btnReset').on('click', function() {
@@ -468,6 +474,7 @@ function initMap() {
   });
   if (firstRun) {
     $("#map").show();
+		$("#map").addClass('mapStyles');
     $("#map").width("100%").height("300");
     infoWindow = new google.maps.InfoWindow;
     // console.log(infoWindow);
@@ -534,7 +541,7 @@ function listRestaurants(pos) {
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
 		$('#foodList').show();
-    var list = $("<ul>");
+    var list = $("<ul class='mt-2 mb-2'>");
     for (var i = 0; i < results.length; i++) {
       console.log(results[i])
       list.append($("<li class=foodLink name='" + results[i].name

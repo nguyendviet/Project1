@@ -64,6 +64,9 @@ body {
    background: linear-gradient(#54494b, black);
    height: 100%;
 }
+input::placholder {
+  color: lightgray;
+}
 /*modal styling*/
 .modal-header {
   background-color: #274e3e;
@@ -80,8 +83,8 @@ body {
   color: #eae3c5;
 }
 .img-container {
-  width: 500px;
-  height: 500px;
+  width: 350px;
+  height: 350px;
   margin-left: auto;
   margin-right: auto;
   background-color: lightgray;
@@ -172,22 +175,47 @@ body {
   margin-bottom: .25rem;
   color: #54494b;
 }
+.messageBoard .card-title {
+  color: lightgray;
+}
+.notify {
+  text-align: center;
+}
 /*here when i got here*/
 
 .test {
 	border: 2px solid #8a6d3b;
 }
+.mapStyles {
+  border: 1px solid #b33951;
+  margin: 0 0 1rem 0;
+  border-radius: 3px;
+}
 #foodList {
   height: 150px;
   overflow-y: scroll;
   background: white;
+  border: 1px solid #b33951;
+  margin: 0 0 1rem 0;
+  border-radius: 3px;
 }
-li.foodLink {
+#foodList ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+#foodList>ul>li:nth-child(odd) {
+  background-color: #E7F2EE;
+}
+#foodList>ul>li.foodLink {
     font-size: 80%;
-    padding-bottom: 8px;
+    padding-bottom: 5px;
     list-style: none;
+    cursor: pointer;
+    padding-left: 5px;
 }
-
+#foodList>ul>li:last-child {
+  padding-bottom: 3px;
+}
 /* Extra small devices (portrait phones, less than 576px) */
 /* No media query since this is the default in Bootstrap */
 

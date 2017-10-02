@@ -37,11 +37,11 @@
 	<div class="main container test p-3 cream">
 		<!-- remove this outside container div when done -->
 		<div class="instructions"><p class="welcome">Please enter your name so we can get started</p></div>
-		<div class="container login-container mb-2">
+		<div class="container login-container mb-3">
 			<form class="form-inline col-sm-12 login">
 					<input type="text" class="form-control block mx-auto col-sm-12 mb-3 name" placeholder="Enter your name">
 					<br />
-					<button type="submit" class="btn btn-primary btn-submit">Enter</button>
+					<button type="submit" class="btn btn-primary btn-submit">Submit</button>
 			</form>
 			<!-- <div class="alert alert-success hi" role="alert"></div> -->
 		</div>
@@ -53,16 +53,16 @@
 		<div class="container mb-2 join">
 			<form class="form-inline">
 				<!-- <input type="text" class="form-control gameId" placeholder="Game ID"> -->
-				<button type="submit" class="btn btn-primary btnJoin">Join Game</button>
+				<button type="submit" class="btn btn-primary btnJoin block mx-auto mb-3">Join Game</button>
 			</form>
 		</div>
 
 		<div class="container mb-2 start">
-			<button type="button" class="btn btn-primary btnStart block mx-auto">Start Game</button>
+			<button type="button" class="btn btn-primary btnStart block mx-auto mb-3">Start Game</button>
 		</div>
 
 		<div class="container mb-2 reset">
-			<button type="button" class="btn btn-primary btnReset">Reset</button>
+			<button type="button" class="btn btn-primary btnReset block mx-auto">Reset</button>
 		</div>
 
 		<div class="container mb-2 notify">
@@ -76,7 +76,7 @@
 
 			<div class="mainGame container">
 				<div class="row game-row">
-					<div class='card col-sm-8 d-block text-center mb-2 pt-3 pb-3 white'>
+					<div class='card col-sm-10 d-block text-center mb-2 pt-3 pb-3 white'>
 						<h3 class='card-title'><strong>Word to Guess</strong></h3>
 						<div class='card-body'>
 						<div class="pause"></div>
@@ -88,7 +88,7 @@
 
 
 			<div class="row keyboard justify-content-center text-center mb-3">
-				<div class="card col-sm-8 pt-3 pb-3 white">
+				<div class="card col-sm-10 pt-3 pb-3 white">
 					<div class=" row1"></div>
 					<div class=" row2"></div>
 					<div class=" row3"></div>
@@ -105,17 +105,15 @@
 			MAIN GAME ENDS
 		======================================================================================= -->
 
-		<div class="foodData">
+		<div class="foodData block mx-auto col-sm-10">
 			<div id="map"></div>
 			<div id="foodList"></div>
 
 		</div>
 
-		<div class="container mb-2 chat">
+		<div class="container col-sm-10 mb-2 chat">
 			<div class="card messageBoard mb-2 pt-1 pl-2 pr-2 pb-1">
-				<div class="card-title">
-					This is the messageBoard
-				</div>
+				<div class="card-title">Something on your mind?</div>
 			</div>
 			<form class="form-inline">
 				<div class="input-group col-sm-12 pl-0 pr-0">
