@@ -109,7 +109,8 @@ playersRef.on('value', function(snap) {
     $('.create').hide();
     $('.join').hide();
 		$('#foodList').hide(); // TEST
-		$('.main.container').hide(); //TEST
+		$('.main').hide(); //TEST
+    $('#map').hide();
     $('.notify').html(''); //clear notification for players not in game but don't reload browser
   }
 
@@ -544,6 +545,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function listRestaurants(pos) {
+	$('#foodList').show();
   console.log(pos);
   var service = new google.maps.places.PlacesService(map);
   service.nearbySearch({
@@ -556,7 +558,6 @@ function listRestaurants(pos) {
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
-		$('#foodList').show();
     var list = $("<ul class='mt-2 mb-2'>");
     for (var i = 0; i < results.length; i++) {
       console.log(results[i])
