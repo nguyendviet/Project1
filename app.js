@@ -186,7 +186,7 @@ locationRef.on('child_added', function(snap) {
   var w3wWordsShown = snap.val().w3wWords;
 
   //final message: name of chosen restaurant and address
-  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address + ' address in 3 words: ' + '<a href="' + w3wLink + '" target="_blank">' + w3wWordsShown + '</a>');
+  $('.notify').html('The chosen restaurant is <b>' + name + '</b> and the address is <b>' + address + '</b><br/>The address in 3 words: ' + '<a href="' + w3wLink + '" target="_blank">' + w3wWordsShown + '</a>');
 });
 
 /*=========================================================================================================
