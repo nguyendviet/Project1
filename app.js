@@ -1,11 +1,11 @@
   // Initialize Firebase
   var config = {
-  	apiKey: "AIzaSyA72vDuoXTFrA6BRNHNmbfU95BRQcJ_F4s",
-  	authDomain: "thought-for-food-aed70.firebaseapp.com",
-  	databaseURL: "https://thought-for-food-aed70.firebaseio.com",
-  	projectId: "thought-for-food-aed70",
-  	storageBucket: "",
-  	messagingSenderId: "469836775735"
+    apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
+    authDomain: "project1-d8c77.firebaseapp.com",
+    databaseURL: "https://project1-d8c77.firebaseio.com",
+    projectId: "project1-d8c77",
+    storageBucket: "project1-d8c77.appspot.com",
+    messagingSenderId: "510825956303"
   };
   firebase.initializeApp(config);
 
@@ -182,9 +182,11 @@ winnerRef.on('child_added', function(snap) {
 locationRef.on('child_added', function(snap) {
   var name = snap.val().name;
   var address = snap.val().address;
+  var w3wLink = snap.val().w3wMap;
+  var w3wWordsShown = snap.val().w3wWords;
 
   //final message: name of chosen restaurant and address
-  $('.notify').html('The chosen restaurant is ' + name + ' and the address is ' + address + ' address in 3 words: ' + '<a href="' + w3wMap + '" target="_blank">' + w3wWords + '</a>');
+  $('.notify').html('The chosen restaurant is <b>' + name + '</b> and the address is <b>' + address + '</b><br/>The address in 3 words: ' + '<a href="' + w3wLink + '" target="_blank">' + w3wWordsShown + '</a>');
 });
 
 /*=========================================================================================================
@@ -558,7 +560,9 @@ function listRestaurants(pos) {
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
+
     var list = $("<ul class='mt-2 mb-2'>");
+
     for (var i = 0; i < results.length; i++) {
       console.log(results[i])
       list.append($("<li class=foodLink name='" + results[i].name
@@ -570,15 +574,18 @@ function callback(results, status) {
       latlng = String(reslat)+","+String (reslong);
       w3w();
     }
+
     $("#foodList").html(list);
-		addMapMarker(pos);
-		$("#foodList").on("click",".foodLink",function(){
+
+    addMapMarker(pos);
+
+    $("#foodList").on("click",".foodLink",function(){
 			var name = $(this).attr("name");
 			var address = $(this).attr("address");
 			console.log(name,address);
 			// Viet, this is where you drive
 
-      var chosenRestaurant = {name: name, address: address};
+      var chosenRestaurant = {name: name, address: address, w3wMap: w3wMap, w3wWords: w3wWords};
 
       locationRef.push(chosenRestaurant);
 		});
