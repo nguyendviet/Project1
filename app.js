@@ -13,7 +13,7 @@
 GLOBAL VARS
 =========================================================================================================*/
 
-//firebase vars
+//=============== firebase vars ===============
 var database = firebase.database();
 var playersRef = database.ref('players');
 var startRef = database.ref('start');
@@ -30,23 +30,45 @@ var myInfo = {
   join: false,
   food: ''
 };
-// var chomp = new Audio("assets/chomp.mp3");
 
-//googlemaps api vars
+//=============== main game vars ===============
+/*var food = ["Ackee","Asado","Bandeja Paisa","Buffalo Wing","Banh Mi","Bulgogi", "Carne Asada","Chicken Parm","Chilli", "Corned Beef","Couscous", "Curry", "Dim Sum","Falafel", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];*/
+
+// food array for presentation
+var food = ["Hamburger", "Lasagna", "Lobster", "Pasta", "Pho", "Pizza", "Curry", "Ramen", "Sushi", "Tacos", "Banh Mi", "Corned Beef"]
+
+//keyboard's vars
+var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+var row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+var row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+var row4 = [' '];
+
+//main game vars
+var foodChosen = "";
+var foodChosenArray = [];
+var numBlanks = 0;
+var foodHidden = [];
+var foodDisplayed = [];
+var wrongGuesses = [];
+var letterGuessed = "";
+
+//timer vars
+var countDown = 6;
+var intervalId;
+var audio = $('.sound')[0];
+var wrong = $('.wrong')[0];
+var jingle = $('.jingle')[0];
+
+//=============== googlemaps api vars ===============
 var map, infoWindow, pos;
 var firstRun = false;
 
-console.log(myInfo);
-
-//w3w api vars
+//===============w3w api vars ===============
 var reslat;
 var reslong;
 var latlng;
 var w3wMap;
 var w3wWords;
-
-var jingle = $('.jingle')[0]; //sound var
-
 
 /*=========================================================================================================
 FUNCTIONS
@@ -60,9 +82,7 @@ function stopJingle(){
   jingle.pause();
 }
 
-
 function showGameInfo() {
-
   $('.start').css('display', 'block');
   $('.chat').css('display', 'block');
 }
@@ -70,7 +90,6 @@ function showGameInfo() {
 function winner() {
   myInfo.food = foodChosen;
   winnerRef.push(myInfo);
-  //issue: game automatically reset after win
   initMap();
   playJingle();
 }
@@ -113,32 +132,22 @@ playersRef.on('value', function(snap) {
     $('#map').hide();
     $('.notify').html(''); //clear notification for players not in game but don't reload browser
   }
-
-  console.log(playersInGame);
 });
 
 playersRef.on('child_removed', function(snap) {
   winnerRef.remove(); //remove winner's info whenever a user left
+  $('.start').hide();
 
   if (startRef) {
     resetRef.push(true);
   }
-
-  // startRef.remove(); //stop game <<< exclude this line to prevent problem: game on, user left, others see join button
-
-  /*if ((playersInGame >= 2) && (myInfo.join === true)) {
-  	$('.start').show(); //only show start button to player already joined
-  }*/ //<<< exclude this code to prevent problem: game on, user left, in-game uses see start button
-
-  /*if (myInfo.join !== true) {
-  	$('.join').css('dislay', 'none');
-  }*/
 });
 
 resetRef.on('child_added', function() {
   $('.notify').html('A player has quit during the game, please reset the game.');
   $('.join').hide();
   $('.chat').hide();
+  $('#foodList').hide();
 
 	if (myInfo.join === true) {
 		$('.reset').show();
@@ -146,8 +155,6 @@ resetRef.on('child_added', function() {
 });
 
 //when start ref has value
-
-//IMPORTANT: need to handle when game is on and a user left
 startRef.on('child_added', function(snap) {
   $('.notify').html(snap.val() + ' has started the game!');
   gameOn = true;
@@ -162,11 +169,10 @@ startRef.on('child_added', function(snap) {
   }
 });
 
-//play game: UNDER CONSTRUCTION
-
 //print out messages when there is a message
 chatRef.on('child_added', function(snap) {
   $('.messageBoard').append(snap.val());
+  $('.messageBoard').scrollTop($('.messageBoard')[0].scrollHeight); //always show new message on board
 });
 
 //when winner ref has value
@@ -223,8 +229,6 @@ $('.btn-submit').on('click', function(event) {
 	else {
 		return;
 	}
-
-	console.log(myInfo);
 });
 
 //create game, push name to firebase
@@ -241,8 +245,6 @@ $('.btnCreate').on('click', function() {
     //show start button for player created the game
     showGameInfo();
   }
-
-  console.log(myInfo);
 });
 
 //join game
@@ -265,8 +267,6 @@ $('.btnJoin').on('click', function(event) {
     //show start button only to players joined
     showGameInfo();
   }
-
-  console.log(myInfo);
 });
 
 //start game
@@ -274,8 +274,6 @@ $('.btnStart').on('click', function() {
 
   if (playersInGame >= 2) {
     startRef.set(myInfo);
-
-    console.log(myInfo);
   } else {
     return;
   }
@@ -286,8 +284,7 @@ $('.btnSend').on('click', function(event) {
   event.preventDefault();
 
   var message = $('.newMessage').val().trim();
-	// var objDiv = document.getElementById("divExample");
-	// objDiv.scrollTop = objDiv.scrollHeight;
+
   if (message) {
     chatRef.push('<p class="clear"><strong>' + myInfo.name + '</strong>: ' + message + '</p>');
   } else {
@@ -296,47 +293,15 @@ $('.btnSend').on('click', function(event) {
 
 	//clear sent message from box
 	$('.newMessage').val('');
-	$('.messageBoard').scrollTop($('.messageBoard')[0].scrollHeight);
 });
 
 $('.btnReset').on('click', function() {
   location.reload();
 });
-//the blank space below is created on purpose
 
-
-
-
-
-
-
-
-
-//the blank space above is created on purpose
 /*=========================================================================================================
 MAIN GAME BEGINS
 =========================================================================================================*/
-var food = ["Ackee","Asado","Bandeja Paisa","Buffalo Wing","Banh Mi","Bulgogi", "Carne Asada","Chicken Parm","Chilli", "Corned Beef","Couscous", "Curry", "Dim Sum","Falafel", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];
-
-//keyboard's vars
-var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
-var row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
-var row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
-var row4 = [' '];
-
-//main game vars
-var foodChosen = "";
-var foodChosenArray = [];
-var numBlanks = 0;
-var foodHidden = [];
-var foodDisplayed = [];
-var wrongGuesses = [];
-var letterGuessed = "";
-
-//timer vars
-var countDown = 6;
-var intervalId;
-
 // PRINT QWERTY KEYBOARD
 //print row 1
 for (var i = 0; i < row1.length; i++) {
@@ -349,7 +314,7 @@ for (var i = 0; i < row1.length; i++) {
 	$(".row1").append(lBtn);
 }
 
-//pring row 2
+//print row 2
 for (var i = 0; i < row2.length; i++) {
 	var lBtn = $("<button>");
 
@@ -379,7 +344,6 @@ function printRow4() {
 	lBtn.attr("data-letter", row4);
 	lBtn.text('Space');
 
-
 	$(".row4").append(lBtn);
 }
 printRow4();
@@ -390,7 +354,7 @@ function startGame() {
 		$('.main.container').show()
 })
   foodChosen = food[Math.floor(Math.random() * food.length)];
-  console.log(foodChosen);
+  console.log(foodChosen); //food name cheat
   foodChosenArray = foodChosen.split("");
   numBlanks = foodChosenArray.length;
   foodhHidden = [];
@@ -398,14 +362,10 @@ function startGame() {
   for (var i = 0; i < numBlanks; i++) {
     foodHidden.push("_");
   }
-  console.log(foodHidden.join(" "));
 
   foodDisplayed = foodHidden.join(' ');
   $(".word-blanks").html(foodDisplayed);
 }
-
-var audio = $('.sound')[0]; //sound var
-var wrong = $('.wrong')[0]; //sound var
 
 function checkLetters(letter) {
 
@@ -425,19 +385,16 @@ function checkLetters(letter) {
     }
     foodDisplayed = foodHidden.join(' ');
     $(".word-blanks").html(foodDisplayed);
-    // chomp.play();
-    audio.play(); //play sound. works
+
+    audio.play();
   } else {
     timer();
     wrong.play();
-
   }
 }
 
 function gameOver() {
   if (foodChosenArray.toString() === foodHidden.toString()) {
-    console.log('You win!');
-
     winner();
   }
 }
@@ -453,7 +410,6 @@ function decrement() {
   $(".pause").html("<h2>" + countDown + "</h2>");
   if (countDown === 0) {
     stop();
-    console.log("Resume Play");
   }
 }
 
@@ -464,13 +420,13 @@ function stop() {
   countDown = 6;
 }
 
+// main game operation
 startGame();
 
 $(".letter-button").on("click", function() {
   var letterPressed = $(this).attr("data-letter").toLowerCase();
 
   checkLetters(letterPressed);
-  console.log(letterPressed);
   gameOver();
 
 });
@@ -496,7 +452,6 @@ function initMap() {
 		$("#map").addClass('mapStyles');
     $("#map").width("100%").height("300");
     infoWindow = new google.maps.InfoWindow;
-    // console.log(infoWindow);
     // Try HTML5 geolocation.
 
     if (navigator.geolocation) {
@@ -547,8 +502,10 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function listRestaurants(pos) {
-	$('#foodList').show();
-  console.log(pos);
+  if (myInfo.join) {
+    $('#foodList').css('display', 'block'); // only show food list for joined users
+  }
+	
   var service = new google.maps.places.PlacesService(map);
   service.nearbySearch({
     location: pos,
@@ -564,7 +521,6 @@ function callback(results, status) {
     var list = $("<ul class='mt-2 mb-2'>");
 
     for (var i = 0; i < results.length; i++) {
-      console.log(results[i])
       list.append($("<li class=foodLink name='" + results[i].name
 			+ "' address='" + results[i].vicinity + "'>")
 			.html(results[i]
@@ -582,12 +538,10 @@ function callback(results, status) {
     $("#foodList").on("click",".foodLink",function(){
 			var name = $(this).attr("name");
 			var address = $(this).attr("address");
-			console.log(name,address);
-			// Viet, this is where you drive
-
       var chosenRestaurant = {name: name, address: address, w3wMap: w3wMap, w3wWords: w3wWords};
 
       locationRef.push(chosenRestaurant);
+      $('#foodList').hide();
 		});
   }
 }
@@ -607,10 +561,6 @@ function w3w() {
           method: "GET"
         })
       .done(function(response){
-        console.log(queryURL);
-        console.log(response);
-        console.log(response.words);
-
         w3wWords = response.words;
         w3wMap = response.map;
     })
