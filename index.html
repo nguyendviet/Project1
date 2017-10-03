@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
 	<link rel="stylesheet" href="./styles/styles.css" />
-	<!-- CSS TEST FILE -->
 	<title>Project1</title>
 </head>
 
@@ -22,7 +21,6 @@
 				</div>
 				<div class="modal-body">
 					<div class="img-container mb-2 "><img src="./images/Asset_04.png" class="img-fluid block mx-auto" alt="Thought for Food"></div>
-					<!-- <p class="text-center ">When you want to go eat and you don't want to think about where.</p> -->
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary btn-enter pl-5 pr-5" data-dismiss="modal">Enter</button>
@@ -32,7 +30,7 @@
 	</div>
 
 	<div class="main container test p-3 cream">
-		<!-- remove this outside container div when done -->
+
 		<div class="instructions"><p class="welcome">Please enter your name so we can get started</p></div>
 		<div class="container login-container mb-3">
 			<form class="form-inline col-sm-12 login">
@@ -40,7 +38,6 @@
 					<br />
 					<button type="submit" class="btn btn-primary btn-submit">Submit</button>
 			</form>
-			<!-- <div class="alert alert-success hi" role="alert"></div> -->
 		</div>
 
 		<div class="container mb-2 create">
@@ -49,7 +46,6 @@
 
 		<div class="container mb-2 join">
 			<form class="form-inline">
-				<!-- <input type="text" class="form-control gameId" placeholder="Game ID"> -->
 				<button type="submit" class="btn btn-primary btnJoin block mx-auto mb-3">Join Game</button>
 			</form>
 		</div>
@@ -69,20 +65,17 @@
 		<!-- =======================================================================================
 			MAIN GAME BEGINS
 		======================================================================================= -->
-		<!-- First Panel: Holds the Word to Guess (blanks and guessed word). -->
 
-			<div class="mainGame container">
-				<div class="row game-row">
-					<div class='card col-sm-10 d-block text-center mb-2 pt-3 pb-3 white'>
-						<h3 class='card-title'><strong>Word to Guess</strong></h3>
-						<div class='card-body'>
+		<div class="mainGame container">
+			<div class="row game-row">
+				<div class='card col-sm-10 d-block text-center mb-2 pt-3 pb-3 white'>
+					<h3 class='card-title'><strong>Word to Guess</strong></h3>
+					<div class='card-body'>
 						<div class="pause"></div>
-						<!-- This h3 section called word-blanks is what we'll be replacing with letters as the user guesses. Pay particular attention to the class called ***word-blanks***. We'll be referencing this in the JavaScript. -->
 						<h3 class='word-blanks'></h3>
 					</div>
 				</div>
 			</div>
-
 
 			<div class="row keyboard justify-content-center text-center mb-3">
 				<div class="card col-sm-10 pt-3 pb-3 white">
@@ -112,7 +105,6 @@
 		<div class="foodData block mx-auto col-sm-10">
 			<div id="map" class="col-sm-12 block mx-auto"></div>
 			<div id="foodList"></div>
-
 		</div>
 
 		<div class="container col-sm-10 mb-2 chat">
@@ -130,7 +122,6 @@
 		</div>
 
 	</div>
-	<!-- remove this outside container div when done -->
 
 	<script src="https://www.gstatic.com/firebasejs/4.4.0/firebase.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -138,7 +129,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh8G52VJ26LanxyxfOvKbseB8GlOgO2Pw&libraries=places&callback=initMap" async defer></script>
 	<script src="app.js"></script>
-	<!-- JS TEST FILE -->
 </body>
 
 </html>
