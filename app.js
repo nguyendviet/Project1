@@ -1,11 +1,11 @@
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDLW7IpdzxFnMN1-j_Gy30fmPrkCMdFrXQ",
-    authDomain: "hangman-a7bac.firebaseapp.com",
-    databaseURL: "https://hangman-a7bac.firebaseio.com",
-    projectId: "hangman-a7bac",
-    storageBucket: "hangman-a7bac.appspot.com",
-    messagingSenderId: "23417614471"
+  	apiKey: "AIzaSyA72vDuoXTFrA6BRNHNmbfU95BRQcJ_F4s",
+  	authDomain: "thought-for-food-aed70.firebaseapp.com",
+  	databaseURL: "https://thought-for-food-aed70.firebaseio.com",
+  	projectId: "thought-for-food-aed70",
+  	storageBucket: "",
+  	messagingSenderId: "469836775735"
   };
   firebase.initializeApp(config);
 

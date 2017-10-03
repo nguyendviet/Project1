@@ -78,16 +78,16 @@ input::placholder {
   font-weight: bold;
   margin-left: auto;
   margin-right: auto;
-  font-size: 3rem;
+  /*font-size: 3rem;*/
   background-color: #274e3e;
   color: #eae3c5;
 }
 .img-container {
-  width: 350px;
+  /*width: 350px;
   height: 350px;
   margin-left: auto;
   margin-right: auto;
-  background-color: lightgray;
+  background-color: lightgray;*/
 }
 .btn-enter {
   display: block;
