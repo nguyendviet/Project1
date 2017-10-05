@@ -1,6 +1,8 @@
 # Project1
 George Washington University Group Project
 
+Project Name: Thought for Food
+
 Contributors: James, Mike, Rolando, Viet
 
 =================================================================
