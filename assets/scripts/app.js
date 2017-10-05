@@ -1,13 +1,13 @@
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAawFegEX70qU1MknTwFYviIqHbqgS3-NQ",
-    authDomain: "project1-d8c77.firebaseapp.com",
-    databaseURL: "https://project1-d8c77.firebaseio.com",
-    projectId: "project1-d8c77",
-    storageBucket: "project1-d8c77.appspot.com",
-    messagingSenderId: "510825956303"
-  };
-  firebase.initializeApp(config);
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyA_okOYKXJMdeQXDoEl2BvsOE-SztiWL-Y",
+  authDomain: "thought-for-food-a9607.firebaseapp.com",
+  databaseURL: "https://thought-for-food-a9607.firebaseio.com",
+  projectId: "thought-for-food-a9607",
+  storageBucket: "",
+  messagingSenderId: "713609455221"
+};
+firebase.initializeApp(config);
 
 /*=========================================================================================================
 GLOBAL VARS
@@ -32,10 +32,7 @@ var myInfo = {
 };
 
 //=============== main game vars ===============
-/*var food = ["Ackee","Asado","Bandeja Paisa","Buffalo Wing","Banh Mi","Bulgogi", "Carne Asada","Chicken Parm","Chilli", "Corned Beef","Couscous", "Curry", "Dim Sum","Falafel", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];*/
-
-// food array for presentation
-var food = ["Hamburger", "Lasagna", "Lobster", "Pasta", "Pho", "Pizza", "Curry", "Ramen", "Sushi", "Tacos", "Banh Mi", "Corned Beef"]
+var food = ["Ackee","Asado","Bandeja Paisa","Buffalo Wing","Banh Mi","Bulgogi", "Carne Asada","Chicken Parm","Chilli", "Corned Beef","Couscous", "Curry", "Dim Sum","Falafel", "Hamburger", "Lasagna", "Lobster", "Masala Dosa", "Paella", "Pasta", "Pho", "Pizza", "Ramen", "Sushi", "Tacos"];
 
 //keyboard's vars
 var row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
@@ -112,7 +109,7 @@ playersRef.on('value', function(snap) {
 
     if (myInfo.join !== true) {
       $('.join').css('display', 'block'); //only show join button to playrers not the host
-    } //this causes: game on, use quit, others can see join button and can join in the middle of the game
+    }
 
     if ((playersInGame === 1) && startRef) {
       startRef.remove(); //remove in game condition if players left and only 1 player left
@@ -127,8 +124,8 @@ playersRef.on('value', function(snap) {
 
     $('.create').hide();
     $('.join').hide();
-		$('#foodList').hide(); // TEST
-		$('.main').hide(); //TEST
+		$('#foodList').hide();
+		$('.main').hide();
     $('#map').hide();
     $('.notify').html(''); //clear notification for players not in game but don't reload browser
   }
@@ -452,7 +449,6 @@ function initMap() {
 		$("#map").addClass('mapStyles');
     $("#map").width("100%").height("300");
     infoWindow = new google.maps.InfoWindow;
-    // Try HTML5 geolocation.
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
