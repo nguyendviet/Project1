@@ -4,10 +4,10 @@ George Washington University Group Project
 ## Project Name: Thought for Food
 
 ## Contributors: 
-* James
-* Mike
-* Rolando
-* Viet
+* [James](https://github.com/jimboneely)
+* [Mike](https://github.com/MikeYencha)
+* [Rolando](https://github.com/rcintron1)
+* [Viet](https://github.com/nguyendviet)
 
 ## Technologies
 * Google Firebase
