@@ -3,6 +3,7 @@
 ## Overview
 * George Washington University Group Project.
 * Project name: Thought for food.
+
 A full stack app that allows users to securely register or sign in then write notes which are saved to its database.
 
 ### WHY WE BUILT THIS APP?
