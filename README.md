@@ -1,7 +1,6 @@
 # Project1
 
 ## Overview
-* George Washington University Group Project.
 * Project name: Thought for food.
 
 An app that helps users find a food dish and location by playing a word game.
